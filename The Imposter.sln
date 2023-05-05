@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "The Imposter", "The Imposter\The Imposter.csproj", "{31F14762-DCF5-426F-A084-5A5910DAB56E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonoGamePlus", "..\..\MonoGamePlus\MonoGamePlus\MonoGamePlus.csproj", "{32139535-12F7-436A-A45B-C2B7B431FA6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonoGamePlus", "MonoGamePlus\MonoGamePlus.csproj", "{40681579-6C06-4326-BEFF-6D9A44BDBB3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{31F14762-DCF5-426F-A084-5A5910DAB56E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31F14762-DCF5-426F-A084-5A5910DAB56E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31F14762-DCF5-426F-A084-5A5910DAB56E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{32139535-12F7-436A-A45B-C2B7B431FA6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{32139535-12F7-436A-A45B-C2B7B431FA6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{32139535-12F7-436A-A45B-C2B7B431FA6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{32139535-12F7-436A-A45B-C2B7B431FA6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40681579-6C06-4326-BEFF-6D9A44BDBB3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40681579-6C06-4326-BEFF-6D9A44BDBB3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40681579-6C06-4326-BEFF-6D9A44BDBB3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40681579-6C06-4326-BEFF-6D9A44BDBB3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
