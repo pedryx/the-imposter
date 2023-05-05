@@ -6,4 +6,8 @@
     <RootNamespace>TheImposter</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\MonoGamePlus\MonoGamePlus\MonoGamePlus.csproj" />
+  </ItemGroup>
+
 </Project>
