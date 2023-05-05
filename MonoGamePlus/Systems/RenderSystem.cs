@@ -68,7 +68,7 @@ public class RenderSystem : GameSystem
     {
         if (clipping)
         {
-            float maxDistance = appearance.Sprite.GetSize().Length();
+            float maxDistance = Game.Resolution.Y + appearance.Sprite.GetSize().Length();
             float distance = Vector2.Distance(
                 GameState.Camera.Position,
                 appearance.Sprite.Position + transform.Position);
