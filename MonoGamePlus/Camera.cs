@@ -3,6 +3,8 @@ using Arch.Core.Extensions;
 
 using Microsoft.Xna.Framework;
 
+using MonoGamePlus.Components;
+
 using System;
 
 namespace MonoGamePlus;
@@ -59,8 +61,8 @@ public class Camera
 
     internal void Update(float elapsed)
     {
-        if (Target != null && Target.Value.Has<Vector2>())
-            Position = Target.Value.Get<Vector2>();
+        if (Target != null && Target.Value.Has<Transform>())
+            Position = Target.Value.Get<Transform>().Position;
 
         if (shakeActive)
         {

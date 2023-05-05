@@ -58,8 +58,10 @@ public class EntityControlSystem : GameSystem
         else if (!currentMovement & lastMovement)
         {
             movement.Speed = 0.0f;
-            OnMoveEnd.Invoke(this, new EntityEventArgs(Target));
+            OnMoveEnd?.Invoke(this, new EntityEventArgs(Target));
         }
+
+        lastMovement = currentMovement;
 
         base.Update(elapsed);
     }

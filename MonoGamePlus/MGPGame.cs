@@ -55,7 +55,7 @@ public class MGPGame : Game
     /// <summary>
     /// How fast is the game running, changing this value will not affect performance.
     /// </summary>
-    public float Speed { get; set; }
+    public float Speed { get; set; } = 1.0f;
 
     /// <summary>
     /// Create new MonoGamePlus Game.
