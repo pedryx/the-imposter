@@ -7,8 +7,8 @@ public class CameraZoomControlSystem : GameSystem
     private MouseState lastMouseState;
 
     public float ZoomSpeed { get; set; } = 5.0f;
-    public float MinZoom { get; set; } = 0.9f;
-    public float MaxZoom { get; set; } = 2.0f;
+    public float MinZoom { get; set; } = 2.0f;
+    public float MaxZoom { get; set; } = 4.0f;
 
     protected override void Initialize()
     {

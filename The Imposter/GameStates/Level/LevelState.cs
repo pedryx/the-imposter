@@ -24,6 +24,8 @@ internal class LevelState : GameState
 
     private Entity imposter;
     private EntityControlSystem controlSystem;
+    // TODO: remove FPS counter
+    private FPSCounterSystem fpsCounterSystem;
 
     private Graph graph;
 
@@ -80,6 +82,7 @@ internal class LevelState : GameState
         {
             Speed = playerBaseSpeed + Upgrades.MoveSpeed,
         };
+        fpsCounterSystem = new FPSCounterSystem();
 
         AddUpdateSystem(new TimePlayedTrackingSystem(this));
         AddUpdateSystem(new CameraZoomControlSystem());
@@ -88,6 +91,8 @@ internal class LevelState : GameState
         AddUpdateSystem(new MovementSystem());
         AddUpdateSystem(new CollisionSystem());
         AddUpdateSystem(new PlayerControlSystem(this));
+
+        AddUpdateSystem(fpsCounterSystem);
 
         AddRenderSystem(new RenderSystem());
     }

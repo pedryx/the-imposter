@@ -9,12 +9,12 @@ using System.Collections.Generic;
 namespace TheImposter.GameStates.Level;
 internal class WorldGenerator
 {
-    private const float doorWidth = 200.0f;
-    private const float houseWidth = 6000.0f;
-    private const float houseHeight = 4000.0f;
+    private const float doorWidth = 128.0f;
+    private const float houseWidth = 3072.0f;
+    private const float houseHeight = 2048.0f;
 
-    private const float outsideWallsWidth = 50.0f;
-    private const float insideWallsWidth = 30.0f;
+    private const float outsideWallsWidth = 32.0f;
+    private const float insideWallsWidth = 16.0f;
 
     private const int nodesPerRoomSize = 1;
     private const float characterSize = 60.0f;
@@ -57,13 +57,14 @@ internal class WorldGenerator
     public void Generate(int characterCount)
     {
         Graph = new Graph();
-
-        CreateMansion();
         Spawn = new Vector2(houseWidth / 2.0f - roomBWidth / 2.0f, 0.0f);
+
+        CreateFloor();
+        CreateMansion();
 
         for (int i = 0; i < characterCount; i++)
         {
-            factory.CreateNPC(Graph.GetRandomNode(game.Random).ToVector2(), Color.Orange);
+            factory.CreateNPC(Graph.GetRandomNode(game.Random).ToVector2(), Color.White);
         }
         Imposter = factory.CreateImposter(Graph.GetRandomNode(game.Random).ToVector2());
     }
@@ -318,6 +319,19 @@ internal class WorldGenerator
                 topLeft + new Vector2(houseWidth - roomBWidth, houseHeight - (roomAHeight + hallHeight / 2.0f)),
             });
         #endregion
+    }
+
+    private void CreateFloor()
+    {
+        const float tileSize = 32.0f;
+
+        for (float x = -houseWidth / 2.0f; x < houseWidth / 2.0f; x += tileSize)
+        {
+            for (float y = -houseHeight / 2.0f; y < houseHeight / 2.0f; y += tileSize)
+            {
+                factory.CreateFloorTile(new Vector2(x + tileSize / 2.0f, y + tileSize / 2.0f));
+            }
+        }
     }
 
     private void CreateRoom(Vector2 offset, Vector2 size, List<Vector2> doors)

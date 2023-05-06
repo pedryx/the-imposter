@@ -42,7 +42,7 @@ public class RenderSystem : GameSystem
         base.Update(elapsed);
     }
 
-    private void DrawLayer(in QueryDescription query, bool useCamera = true, bool clipping = false)
+    private void DrawLayer(in QueryDescription query, bool useCamera = true, bool clipping = true)
     {
         if (useCamera)
         {
@@ -68,7 +68,7 @@ public class RenderSystem : GameSystem
     {
         if (clipping)
         {
-            float maxDistance = Game.Resolution.Y + appearance.Sprite.GetSize().Length();
+            float maxDistance = Game.Resolution.X + appearance.Sprite.GetSize().Length();
             float distance = Vector2.Distance(
                 GameState.Camera.Position,
                 appearance.Sprite.Position + transform.Position);
