@@ -33,7 +33,7 @@ internal class GameOverState : GameState
             Offset = new Vector2(Game.Resolution.X / 2.0f, 240.0f),
         });
 
-        StackPanel panel = new StackPanel(Game.Resolution / 2.0f + new Vector2(0.0f, 170.0f))
+        StackPanel panel = new(Game.Resolution / 2.0f + new Vector2(0.0f, 170.0f))
         {
             Padding = 40.0f,
         };
@@ -43,7 +43,7 @@ internal class GameOverState : GameState
         panel.Add(CreateLabel($"COMPLETED  STAGES:  {statistics.CompletedStages}"));
         panel.Add(CreateLabel($"IMPOSTERS  FOUND:  {statistics.ImpostersFound}"));
 
-        Button button = new Button();
+        Button button = new();
         button.Label.SpriteText = new SpriteText(Game.Fonts["Curse of the Zombie;48"], "MAIN MENU", Color.Gray);
         button.HoverColor = Color.Yellow;
         button.OnClick += (sender, e) =>
@@ -57,5 +57,5 @@ internal class GameOverState : GameState
     }
 
     private Label CreateLabel(string text, int size = 48)
-        => new Label(new SpriteText(Game.Fonts[$"Curse of the Zombie;{size}"], text, Color.Gray));
+        => new(new SpriteText(Game.Fonts[$"Curse of the Zombie;{size}"], text, Color.Gray));
 }

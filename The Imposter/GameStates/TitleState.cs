@@ -25,7 +25,7 @@ internal class TitleState : GameState
             Offset = new Vector2(Game.Resolution.X / 2.0f, 200.0f),
         });
 
-        StackPanel panel = new StackPanel(Game.Resolution / 2.0f + new Vector2(0.0f, 150.0f))
+        StackPanel panel = new(Game.Resolution / 2.0f + new Vector2(0.0f, 150.0f))
         {
             Padding = 40.0f,
         };
@@ -45,7 +45,7 @@ internal class TitleState : GameState
 
     private Button CreateButton(string text, Action action)
     {
-        Button button = new Button();
+        Button button = new();
 
         button.Label.SpriteText = new SpriteText(Game.Fonts["Curse of the Zombie;64"], text, Color.Gray);
         button.HoverColor = Color.Yellow;

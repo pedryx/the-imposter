@@ -35,15 +35,15 @@ internal class StageWinState : GameState
             Offset = new Vector2(Game.Resolution.X / 2.0f, 100.0f),
         });
 
-        StackPanel panel = new StackPanel(Game.Resolution / 2.0f + new Vector2(0.0f, 100.0f))
+        StackPanel panel = new(Game.Resolution / 2.0f + new Vector2(0.0f, 100.0f))
         {
             Padding = 40.0f,
         };
         UILayer.AddElement(panel);
-        panel.Add(CreateLabel("PICK  AN  UPGRADE:"));
+        panel.Add(CreateLabel("PICK  AN  UPGRADE:", 32));
         panel.Add(CreateButton("MOVE  SPEED", () =>
         {
-            upgrades.upgradeMoveSpeed();
+            upgrades.UpgradeMoveSpeed();
             NextStage();
         }));
 
@@ -56,12 +56,12 @@ internal class StageWinState : GameState
         Game.AddGameState(new LevelState(statistics, upgrades, stage + 1));
     }
 
-    private Label CreateLabel(string text)
-        => new Label(new SpriteText(Game.Fonts["Curse of the Zombie;48"], text, Color.Gray));
+    private Label CreateLabel(string text, int size = 48)
+        => new(new SpriteText(Game.Fonts[$"Curse of the Zombie;{size}"], text, Color.Gray));
 
     private Button CreateButton(string text, Action action)
     {
-        Button button = new Button();
+        Button button = new();
 
         button.Label.SpriteText = new SpriteText(Game.Fonts["Curse of the Zombie;64"], text, Color.Gray);
         button.HoverColor = Color.Yellow;

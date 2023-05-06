@@ -22,7 +22,7 @@ public class Button : UIElement
     public Color? HoverColor = null;
 
     public override Vector2 Size
-        => new Vector2(MathF.Max(Image.Size.X, Label.Size.X), MathF.Max(Image.Size.Y, Label.Size.Y));
+        => new(MathF.Max(Image.Size.X, Label.Size.X), MathF.Max(Image.Size.Y, Label.Size.Y));
 
     protected override void Initialize()
     {

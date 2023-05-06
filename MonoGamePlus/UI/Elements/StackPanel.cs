@@ -15,7 +15,7 @@ public class StackPanel : UIElement
         set
         {
             padding = value;
-            Recompute();
+            Reposition();
         }
     }
 
@@ -25,7 +25,7 @@ public class StackPanel : UIElement
         set
         {
             vertical = value;
-            Recompute();
+            Reposition();
         }
     }
 
@@ -61,10 +61,10 @@ public class StackPanel : UIElement
         elements.Add(element);
         AddChild(element);
 
-        Recompute();
+        Reposition();
     }
 
-    private void Recompute()
+    private void Reposition()
     {
         Vector2 size = Size;
 

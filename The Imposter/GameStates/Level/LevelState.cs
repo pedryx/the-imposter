@@ -1,8 +1,10 @@
 ﻿using Arch.Core;
+using Arch.Core.Extensions;
 
 using Microsoft.Xna.Framework;
 
 using MonoGamePlus;
+using MonoGamePlus.Components;
 using MonoGamePlus.Systems;
 
 using TheImposter.Systems;
@@ -10,12 +12,14 @@ using TheImposter.Systems;
 namespace TheImposter.GameStates.Level;
 internal class LevelState : GameState
 {
+    private const float maxImposterDistance = 200.0f;
+
+    private Entity imposter;
     private EntityControlSystem controlSystem;
 
     private Graph graph;
 
     public Entity Player { get; private set; }
-    public Entity Imposter { get; private set; }
     public Statistics Statistics { get; private set; } = new();
     public PlayerUpgrades Upgrades { get; private set; } = new();
     public int Stage { get; private set; } = 1;
@@ -27,6 +31,27 @@ internal class LevelState : GameState
         Statistics = statistics;
         Upgrades = playerUpgrades;
         Stage = stage;
+    }
+
+    public void TryFindImposter()
+    {
+        Vector2 playerPosition = Player.Get<Transform>().Position;
+        Vector2 imposterPosition = imposter.Get<Transform>().Position;
+        float distance = Vector2.Distance(playerPosition, imposterPosition);
+
+        if (distance <= maxImposterDistance)
+        {
+            Statistics.ImpostersFound++;
+            Statistics.CompletedStages++;
+
+            Game.RemoveGameState(this);
+            Game.AddGameState(new StageWinState(Statistics, Upgrades, Stage));
+        }
+        else
+        {
+            Game.RemoveGameState(this);
+            Game.AddGameState(new GameOverState(Statistics, "THAT  WAS  NOT  THE  IMPOSTER!"));
+        }
     }
 
     protected override void Initialize()
@@ -66,7 +91,7 @@ internal class LevelState : GameState
         generator.Generate(100);
 
         graph = generator.Graph;
-        Imposter = generator.Imposter;
+        imposter = generator.Imposter;
 
         Player = factory.CreatePlayer(generator.Spawn);
     }

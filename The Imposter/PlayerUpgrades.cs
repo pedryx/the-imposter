@@ -5,5 +5,5 @@ internal class PlayerUpgrades
 
     public float MoveSpeed { get; private set; }
 
-    public void upgradeMoveSpeed() => MoveSpeed += moveSpeedUpgrade;
+    public void UpgradeMoveSpeed() => MoveSpeed += moveSpeedUpgrade;
 }

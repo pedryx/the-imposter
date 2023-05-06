@@ -11,13 +11,11 @@ namespace TheImposter.GameStates.Level;
 internal class LevelFactory
 {
     private readonly MGPGame game;
-    private readonly GameState gameState;
     private readonly World ecsWorld;
 
     public LevelFactory(GameState gameState)
     {
         game = gameState.Game;
-        this.gameState = gameState;
         ecsWorld = gameState.ECSWorld;
     }
 
@@ -46,6 +44,7 @@ internal class LevelFactory
             Layer = (uint)CollisionLayers.Player,
             CollisionLayer = (uint)CollisionLayers.Walls,
         });
+        player.Add<Foreground>();
 
         return player;
     }
@@ -53,6 +52,8 @@ internal class LevelFactory
     public Entity CreateImposter(Vector2 position)
     {
         var imposter = CreateNPC(position, Color.Brown);
+
+        imposter.Add<Foreground>();
 
         return imposter;
     }
