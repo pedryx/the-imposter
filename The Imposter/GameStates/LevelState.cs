@@ -28,6 +28,7 @@ internal class LevelState : GameState
         AddUpdateSystem(new EntityControlSystem(Player));
 
         AddUpdateSystem(new MovementSystem());
+        AddUpdateSystem(new CollisionSystem());
 
         AddRenderSystem(new RenderSystem());
     }
@@ -35,22 +36,29 @@ internal class LevelState : GameState
     public void CreateEntities()
     {
         Player = ECSWorld.Create(
-            new Transform(new Vector2(0.0f, 0.0f)),
+            new Transform(Vector2.Zero),
             new Appearance(new Sprite(Game.Textures.CreateCircle(30, Color.Pink))),
-            new Movement());
+            new Movement(),
+            new Collider(new Vector2(60, 60))
+            {
+                Layer = (uint)CollisionLayers.Player,
+                CollisionLayer = (uint)CollisionLayers.Walls,
+            });
 
         ECSWorld.Create(
-            new Transform(new Vector2(0.0f, 0.0f)),
-            new Appearance(new Sprite(Game.Textures.CreateCircle(150, Color.Red))));
+            new Transform(new Vector2(-200.0f, -200.0f)),
+            new Appearance(new Sprite(Game.Textures.CreateRectangle(new Vector2(300, 300), Color.Blue))),
+            new Collider(new Vector2(300, 300))
+            {
+                Layer = (uint)CollisionLayers.Walls,
+            });
 
         ECSWorld.Create(
-            new Transform(new Vector2(0, 0)),
-            new Appearance(new Sprite(Game.Textures.CreateCircle(50, Color.Blue))));
-        ECSWorld.Create(
-            new Transform(new Vector2(100, 0)),
-            new Appearance(new Sprite(Game.Textures.CreateCircle(50, Color.Yellow))));
-        ECSWorld.Create(
-            new Transform(new Vector2(100, 100)),
-            new Appearance(new Sprite(Game.Textures.CreateCircle(50, Color.Green))));
+            new Transform(new Vector2(200.0f, 200.0f)),
+            new Appearance(new Sprite(Game.Textures.CreateCircle(100, Color.Red))),
+            new Collider(new Vector2(200, 200))
+            {
+                Layer = (uint)CollisionLayers.Walls,
+            });
     }
 }

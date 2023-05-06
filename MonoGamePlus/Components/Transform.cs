@@ -4,8 +4,8 @@ namespace MonoGamePlus.Components;
 public struct Transform
 {
     public Vector2 Position;
-    public float Scale;
     public float Rotation;
+    public float Scale;
 
     public Transform(Vector2 position)
     {

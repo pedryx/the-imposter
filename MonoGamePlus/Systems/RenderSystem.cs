@@ -79,6 +79,6 @@ public class RenderSystem : GameSystem
             }
         }
 
-        Game.SpriteBatch.Draw(appearance.Sprite, transform.Position);
+        Game.SpriteBatch.Draw(appearance.Sprite, transform.Position, transform.Scale, transform.Rotation);
     }
 }

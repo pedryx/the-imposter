@@ -1,4 +1,4 @@
-﻿using MonoGamePlus.Events;
+﻿using MonoGamePlus.Events.Events;
 
 using System;
 using System.Collections;

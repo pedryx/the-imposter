@@ -1,6 +1,12 @@
 ﻿using Arch.Core;
 
+using Microsoft.Xna.Framework;
+
+using MonoGamePlus.Events;
+using MonoGamePlus.Events.Events;
 using MonoGamePlus.Structures;
+
+using System.Collections.Generic;
 
 namespace MonoGamePlus;
 /// <summary>
@@ -30,8 +36,10 @@ public abstract class GameState
     /// Game state's main camera.
     /// </summary>
     public Camera Camera { get; private set; }
+    public EventManager Events { get; private set; } = new();
     // TODO: UI
 
+    public Vector2 WorldSize { get; private set; }
     /// <summary>
     /// Enables/disables update calls of this game state.
     /// </summary>
@@ -41,11 +49,16 @@ public abstract class GameState
     /// </summary>
     public bool Visible { get; set; } = true;
 
-    public GameState()
+    public GameState(Vector2 worldSize)
     {
         updateSystems.OnItemAdd += Systems_OnItemAdd;
         renderSystems.OnItemAdd += Systems_OnItemAdd;
+
+        WorldSize = worldSize;
     }
+
+    public GameState()
+        : this(new Vector2(10_240)) { }
 
     /// <summary>
     /// Add update system. Update systems <see cref="GameSystem.Run(float)"/> method is called in
@@ -108,7 +121,7 @@ public abstract class GameState
     /// </summary>
     protected virtual void Initialize() { }
 
-    private void Systems_OnItemAdd(object sender, Events.BufferedListEventArgs<GameSystem> e)
+    private void Systems_OnItemAdd(object sender, BufferedListEventArgs<GameSystem> e)
     {
         e.Item.Initialize(this);
     }

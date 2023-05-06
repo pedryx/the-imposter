@@ -1,6 +1,6 @@
 ﻿using MonoGamePlus.Structures;
 
-namespace MonoGamePlus.Events;
+namespace MonoGamePlus.Events.Events;
 /// <summary>
 /// Handler for events related with <see cref="BufferedList{T}"./>
 /// </summary>

@@ -42,16 +42,16 @@ public abstract class GameSystem
 public class GameSystem<T1> : GameSystem
     where T1 : struct
 {
-    private readonly QueryDescription query;
+    protected QueryDescription Query { get; private set; }
 
     public GameSystem()
     {
-        query = new QueryDescription().WithAll<T1>();
+        Query = new QueryDescription().WithAll<T1>();
     }
 
     protected override void Update(float elapsed)
     {
-        ECSWorld.Query(in query, (in Entity entity, ref T1 component1) =>
+        ECSWorld.Query(Query, (in Entity entity, ref T1 component1) =>
         {
             Update(elapsed, in entity, ref component1);
         });
@@ -69,16 +69,17 @@ public class GameSystem<T1, T2> : GameSystem
     where T1 : struct
     where T2 : struct
 {
-    private readonly QueryDescription query;
+    protected QueryDescription Query { get; private set; }
+
 
     public GameSystem()
     {
-        query = new QueryDescription().WithAll<T1, T2>();
+        Query = new QueryDescription().WithAll<T1, T2>();
     }
 
     protected override void Update(float elapsed)
     {
-        ECSWorld.Query(in query, (in Entity entity, ref T1 component1, ref T2 component2) =>
+        ECSWorld.Query(Query, (in Entity entity, ref T1 component1, ref T2 component2) =>
         {
             Update(elapsed, in entity, ref component1, ref component2);
         });
@@ -97,16 +98,17 @@ public class GameSystem<T1, T2, T3> : GameSystem
     where T2 : struct
     where T3 : struct
 {
-    private readonly QueryDescription query;
+    protected QueryDescription Query { get; private set; }
+
 
     public GameSystem()
     {
-        query = new QueryDescription().WithAll<T1, T2, T3>();
+        Query = new QueryDescription().WithAll<T1, T2, T3>();
     }
 
     protected override void Update(float elapsed)
     {
-        ECSWorld.Query(in query, (in Entity entity, ref T1 component1, ref T2 component2, ref T3 component3) =>
+        ECSWorld.Query(Query, (in Entity entity, ref T1 component1, ref T2 component2, ref T3 component3) =>
         {
             Update(elapsed, in entity, ref component1, ref component2, ref component3);
         });
@@ -132,16 +134,17 @@ public class GameSystem<T1, T2, T3, T4> : GameSystem
     where T3 : struct
     where T4 : struct
 {
-    private readonly QueryDescription query;
+    protected QueryDescription Query { get; private set; }
+
 
     public GameSystem()
     {
-        query = new QueryDescription().WithAll<T1, T2, T3, T4>();
+        Query = new QueryDescription().WithAll<T1, T2, T3, T4>();
     }
 
     protected override void Update(float elapsed)
     {
-        ECSWorld.Query(in query, (in Entity entity, ref T1 component1, ref T2 component2, ref T3 component3, ref T4 component4) =>
+        ECSWorld.Query(Query, (in Entity entity, ref T1 component1, ref T2 component2, ref T3 component3, ref T4 component4) =>
         {
             Update(elapsed, in entity, ref component1, ref component2, ref component3, ref component4);
         });

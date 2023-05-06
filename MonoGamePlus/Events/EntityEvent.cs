@@ -1,7 +1,7 @@
 ﻿using Arch.Core;
 
-namespace MonoGamePlus.Events;
-public delegate void EntityEventhandler(object sender, EntityEventArgs e);
+namespace MonoGamePlus.Events.Events;
+public delegate void EntityEventHandler(object sender, EntityEventArgs e);
 
 public class EntityEventArgs
 {

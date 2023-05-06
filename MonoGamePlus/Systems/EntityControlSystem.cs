@@ -5,13 +5,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 using MonoGamePlus.Components;
-using MonoGamePlus.Events;
+using MonoGamePlus.Events.Events;
 
 namespace MonoGamePlus.Systems;
 public class EntityControlSystem : GameSystem
 {
     private bool lastMovement;
-    private KeyboardState lastKeyboardState;
 
     public Entity Target { get; set; }
 
@@ -21,13 +20,12 @@ public class EntityControlSystem : GameSystem
     public Keys RightKey { get; set; } = Keys.D;
     public float Speed { get; set; } = 500.0f;
 
-    public event EntityEventhandler OnMoveStart;
-    public event EntityEventhandler OnMoveEnd;
+    public event EntityEventHandler OnMoveStart;
+    public event EntityEventHandler OnMoveEnd;
 
     public EntityControlSystem(Entity target)
     {
         Target = target;
-        lastKeyboardState = Keyboard.GetState();
     }
 
     protected override void Update(float elapsed)
