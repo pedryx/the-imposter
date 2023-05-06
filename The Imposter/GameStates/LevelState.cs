@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework;
 using MonoGamePlus;
 using MonoGamePlus.Systems;
 
+using TheImposter.Systems;
+
 namespace TheImposter.GameStates;
 internal class LevelState : GameState
 {
@@ -35,10 +37,10 @@ internal class LevelState : GameState
 
         AddUpdateSystem(new CameraZoomControlSystem());
         AddUpdateSystem(controlSystem);
-
         AddUpdateSystem(new RandomGraphWalkSystem(graph));
         AddUpdateSystem(new MovementSystem());
         AddUpdateSystem(new CollisionSystem());
+        AddUpdateSystem(new PlayerControlSystem(this));
 
         AddRenderSystem(new RenderSystem());
     }
