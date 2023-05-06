@@ -1,5 +1,6 @@
 ﻿Textures:
 	"dark background" by Indie Squid licensed CC-BY 3.0: https://opengameart.org/content/dark-night-full-moon-background
+	"Medieval Fantasy Character Sprites" by wulax licensed CC-BY-SA 3.0,GPL 3.0,OGA-BY 3.0: https://opengameart.org/content/lpc-medieval-fantasy-character-sprites
 
 Fonts:
 	"Storm Gust" by Hanzel Space licensed Free for personal use: https://www.dafont.com/storm-gust.font
