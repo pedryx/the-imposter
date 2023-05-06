@@ -3,13 +3,15 @@
 using Microsoft.Xna.Framework;
 
 using MonoGamePlus;
-using MonoGamePlus.Components;
-using MonoGamePlus.Resources;
 using MonoGamePlus.Systems;
 
 namespace TheImposter.GameStates;
 internal class LevelState : GameState
 {
+    private EntityControlSystem controlSystem;
+
+    private Graph graph;
+
     public Entity Player { get; private set; }
 
     protected override void Initialize()
@@ -25,9 +27,15 @@ internal class LevelState : GameState
 
     public void CreateSystems()
     {
-        AddUpdateSystem(new CameraZoomControlSystem());
-        AddUpdateSystem(new EntityControlSystem(Player));
+        controlSystem = new EntityControlSystem(Player)
+        {
+            Speed = 500.0f,
+        };
 
+        AddUpdateSystem(new CameraZoomControlSystem());
+        AddUpdateSystem(controlSystem);
+
+        AddUpdateSystem(new RandomGraphWalkSystem(graph));
         AddUpdateSystem(new MovementSystem());
         AddUpdateSystem(new CollisionSystem());
 
@@ -37,9 +45,9 @@ internal class LevelState : GameState
     public void CreateEntities()
     {
         LevelFactory factory = new(this);
-        WorldGenerator generator = new(factory);
+        WorldGenerator generator = new(factory, this);
 
         Player = factory.CreatePlayer(new Vector2(100.0f, 0.0f));
-        generator.Generate();
+        graph = generator.Generate(100);
     }
 }

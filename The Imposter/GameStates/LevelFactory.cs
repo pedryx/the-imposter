@@ -1,4 +1,5 @@
 ﻿using Arch.Core;
+using Arch.Core.Extensions;
 
 using Microsoft.Xna.Framework;
 
@@ -20,20 +21,39 @@ internal class LevelFactory
         ecsWorld = gameState.ECSWorld;
     }
 
-    public Entity CreatePlayer(Vector2 position)
+    private Entity CreateCharacter(Vector2 position, Color color)
         => ecsWorld.Create(
             new Transform(position),
-            new Appearance(new Sprite(game.Textures.CreateCircle(30, Color.Red))),
-            new Movement(),
-            new Collider(new Vector2(60))
-            {
-                Layer = (uint)CollisionLayers.Player,
-                CollisionLayer = (uint)CollisionLayers.Walls,
-            });
+            new Appearance(new Sprite(game.Textures.CreateCircle(30, color))),
+            new Movement());
+
+    public Entity CreateNPC(Vector2 position, Color color)
+    {
+        var npc = CreateCharacter(position, color);
+
+        npc.Add(new PathFollow());
+        npc.Get<Movement>().Speed = 150.0f;
+
+        return npc;
+    }
+
+    public Entity CreatePlayer(Vector2 position)
+    {
+        var player = CreateCharacter(position, Color.White);
+
+        player.Add(new Collider(player.Get<Appearance>().Sprite.GetSize())
+        {
+            Layer = (uint)CollisionLayers.Player,
+            CollisionLayer = (uint)CollisionLayers.Walls,
+        });
+
+        return player;
+    }
 
     public Entity CreateWall(Vector2 start, Vector2 end, float width)
     {
-        Vector2 size = start.X == end.X ? new Vector2(width, end.Y - start.Y + width) : new Vector2(end.X - start.X + width, width);
+        Vector2 size = start.X == end.X ? new Vector2(width, end.Y - start.Y + width)
+            : new Vector2(end.X - start.X + width, width);
 
         return ecsWorld.Create(
             new Transform(start - new Vector2(width) / 2.0f + size / 2.0f),

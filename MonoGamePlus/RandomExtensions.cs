@@ -24,9 +24,12 @@ public static class RandomExtensions
     /// Generate random point int bounded space.
     /// </summary>
     /// <param name="bounds">Size of bounded space.</param>
-    public static Vector2 Nextvector2(this Random random, Vector2 bounds)
+    public static Vector2 NextVector2(this Random random, Vector2 bounds)
         => new Vector2(random.NextSingle(), random.NextSingle()) * bounds;
-    
+
+    public static Vector2 NextVector2(this Random random, Vector2 offset, Vector2 bounds)
+        => new(random.NextSingle(offset.X, offset.X + bounds.X), random.NextSingle(offset.Y, offset.Y + bounds.Y));
+
     /// <summary>
     /// Generate single precision floating point number in specific range.
     /// </summary>

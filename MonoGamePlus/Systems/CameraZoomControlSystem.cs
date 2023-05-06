@@ -6,15 +6,15 @@ public class CameraZoomControlSystem : GameSystem
 {
     private MouseState lastMouseState;
 
-    public float ZoomSpeed { get; set; } = 1.0f;
-    public float MinZoom { get; set; } = 0.5f;
+    public float ZoomSpeed { get; set; } = 5.0f;
+    public float MinZoom { get; set; } = 0.9f;
     public float MaxZoom { get; set; } = 2.0f;
 
     protected override void Initialize()
     {
         base.Initialize();
 
-        GameState.Camera.Scale = 0.15f;// (MaxZoom - MinZoom) / 2.0f + MinZoom;
+        GameState.Camera.Scale = MinZoom;// (MaxZoom - MinZoom) / 2.0f + MinZoom;
         lastMouseState = Mouse.GetState();
     }
 
@@ -28,8 +28,8 @@ public class CameraZoomControlSystem : GameSystem
         else if (mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue)
             zoomDirection = -1.0f;
 
-        //GameState.Camera.Scale *= (1.0f + zoomDirection * ZoomSpeed * elapsed);
-        //GameState.Camera.Scale = MathHelper.Clamp(GameState.Camera.Scale, MinZoom, MaxZoom);
+        GameState.Camera.Scale *= (1.0f + zoomDirection * ZoomSpeed * elapsed);
+        GameState.Camera.Scale = MathHelper.Clamp(GameState.Camera.Scale, MinZoom, MaxZoom);
 
         lastMouseState = mouseState;
 
