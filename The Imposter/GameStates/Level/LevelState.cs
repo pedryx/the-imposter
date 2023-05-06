@@ -65,7 +65,7 @@ internal class LevelState : GameState
         base.Initialize();
     }
 
-    public void CreateSystems()
+    private void CreateSystems()
     {
         controlSystem = new EntityControlSystem(Player)
         {
@@ -83,7 +83,7 @@ internal class LevelState : GameState
         AddRenderSystem(new RenderSystem());
     }
 
-    public void CreateEntities()
+    private void CreateEntities()
     {
         LevelFactory factory = new(this);
         WorldGenerator generator = new(factory, this);
