@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Arch.Core;
+
+using Microsoft.Xna.Framework;
 
 using MonoGamePlus;
 
@@ -14,7 +16,7 @@ internal class WorldGenerator
     private const float outsideWallsWidth = 50.0f;
     private const float insideWallsWidth = 30.0f;
 
-    private const int nodesPerRoomSize = 2;
+    private const int nodesPerRoomSize = 1;
     private const float characterSize = 60.0f;
 
     #region Mansion Constants
@@ -40,7 +42,11 @@ internal class WorldGenerator
     private readonly LevelFactory factory;
     private readonly MGPGame game;
 
-    private Graph graph;
+    public Graph Graph { get; private set; }
+
+    public Entity Imposter { get; private set; }
+
+    public Vector2 Spawn { get; private set; }
 
     public WorldGenerator(LevelFactory factory, GameState gameState)
     {
@@ -48,18 +54,18 @@ internal class WorldGenerator
         game = gameState.Game;
     }
 
-    public Graph Generate(int characterCount)
+    public void Generate(int characterCount)
     {
-        graph = new Graph();
+        Graph = new Graph();
 
         CreateMansion();
+        Spawn = new Vector2(houseWidth / 2.0f - (roomBWidth / 2.0f), 0.0f);
 
         for (int i = 0; i < characterCount; i++)
         {
-            factory.CreateNPC(graph.GetRandomNode(game.Random).ToVector2(), Color.Orange);
+            factory.CreateNPC(Graph.GetRandomNode(game.Random).ToVector2(), Color.Orange);
         }
-
-        return graph;
+        Imposter = factory.CreateImposter(Graph.GetRandomNode(game.Random).ToVector2());
     }
 
     private void CreateMansion()
@@ -331,7 +337,7 @@ internal class WorldGenerator
         {
             for (int j = i + 1; j < nodes.Count; j++)
             {
-                graph.AddEdge(nodes[i], nodes[j]);
+                Graph.AddEdge(nodes[i], nodes[j]);
             }
         }
     }
@@ -342,9 +348,9 @@ internal class WorldGenerator
 
         points?.Add(point);
 
-        if (graph.Contains(point))
+        if (Graph.Contains(point))
             return;
 
-        graph.AddNode(point);
+        Graph.AddNode(point);
     }
 }

@@ -50,6 +50,13 @@ internal class LevelFactory
         return player;
     }
 
+    public Entity CreateImposter(Vector2 position)
+    {
+        var imposter = CreateNPC(position, Color.Brown);
+
+        return imposter;
+    }
+
     public Entity CreateWall(Vector2 start, Vector2 end, float width)
     {
         Vector2 size = start.X == end.X ? new Vector2(width, end.Y - start.Y + width)

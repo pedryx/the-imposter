@@ -13,6 +13,7 @@ internal class LevelState : GameState
     private Graph graph;
 
     public Entity Player { get; private set; }
+    public Entity Imposter { get; private set; }
 
     protected override void Initialize()
     {
@@ -47,7 +48,11 @@ internal class LevelState : GameState
         LevelFactory factory = new(this);
         WorldGenerator generator = new(factory, this);
 
-        Player = factory.CreatePlayer(new Vector2(100.0f, 0.0f));
-        graph = generator.Generate(100);
+        generator.Generate(100);
+
+        graph = generator.Graph;
+        Imposter = generator.Imposter;
+
+        Player = factory.CreatePlayer(generator.Spawn);
     }
 }
