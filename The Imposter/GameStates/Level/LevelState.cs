@@ -16,6 +16,18 @@ internal class LevelState : GameState
 
     public Entity Player { get; private set; }
     public Entity Imposter { get; private set; }
+    public Statistics Statistics { get; private set; } = new();
+    public PlayerUpgrades Upgrades { get; private set; } = new();
+    public int Stage { get; private set; } = 1;
+
+    public LevelState() { }
+
+    public LevelState(Statistics statistics, PlayerUpgrades playerUpgrades, int stage)
+    {
+        Statistics = statistics;
+        Upgrades = playerUpgrades;
+        Stage = stage;
+    }
 
     protected override void Initialize()
     {
@@ -32,9 +44,10 @@ internal class LevelState : GameState
     {
         controlSystem = new EntityControlSystem(Player)
         {
-            Speed = 500.0f,
+            Speed = 500.0f + Upgrades.MoveSpeed,
         };
 
+        AddUpdateSystem(new TimePlayedTrackingSystem(this));
         AddUpdateSystem(new CameraZoomControlSystem());
         AddUpdateSystem(controlSystem);
         AddUpdateSystem(new RandomGraphWalkSystem(graph));
