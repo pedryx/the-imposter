@@ -14,15 +14,17 @@ internal class LevelFactory
 {
     private readonly MGPGame game;
     private readonly World ecsWorld;
+    private readonly Animations animations;
 
     public LevelFactory(GameState gameState)
     {
         game = gameState.Game;
         ecsWorld = gameState.ECSWorld;
+        animations = new Animations();
     }
 
     private Sprite CreateCharacterSprite(Color color, string name)
-        => new Sprite(game.Textures[name])
+        => new(game.Textures[name])
         {
             SourceRectangle = new Rectangle(0, 128, 64, 64),
             Origin = new Vector2(32, 38),
@@ -44,12 +46,12 @@ internal class LevelFactory
             else if (feetIndex == 2)
                 sprites.Add(CreateCharacterSprite(color, "FEET_shoes_brown"));
 
-            int legsindex = game.Random.Next(4);
-            if (legsindex == 1)
+            int legsIndex = game.Random.Next(4);
+            if (legsIndex == 1)
                 sprites.Add(CreateCharacterSprite(color, "LEGS_pants_greenish"));
-            else if (legsindex == 2)
+            else if (legsIndex == 2)
                 sprites.Add(CreateCharacterSprite(color, "LEGS_plate_armor_pants"));
-            else if (legsindex == 3)
+            else if (legsIndex == 3)
                 sprites.Add(CreateCharacterSprite(color, "LEGS_robe_skirt"));
 
             int torsoIndex = game.Random.Next(10);
@@ -117,7 +119,11 @@ internal class LevelFactory
             {
                 Sprites = CreateCharacterSprites(color, clothes),
             },
-            new Movement());
+            new Movement(),
+            new Animation(animations.WalkDown, 0.125f)
+            {
+                StartIndex = 1,
+            });
 
     public Entity CreateNPC(Vector2 position, Color color)
     {

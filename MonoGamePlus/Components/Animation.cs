@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace MonoGamePlus.Components;
 public struct Animation
 {
-    public List<AnimationFrame> Frames;
+    public AnimationFrame[] Frames;
     /// <summary>
     /// Time elapsed from last frame switch in seconds.
     /// </summary>
@@ -18,13 +18,9 @@ public struct Animation
     /// index of current frame.
     /// </summary>
     public int FrameIndex;
+    public int StartIndex;
 
-    public Animation()
-    {
-        Frames = new List<AnimationFrame>();
-    }
-
-    public Animation(List<AnimationFrame> frames, float timePerFrame = 0.1f)
+    public Animation(AnimationFrame[] frames, float timePerFrame = 0.1f)
     {
         Frames = frames;
         TimePerFrame = timePerFrame;

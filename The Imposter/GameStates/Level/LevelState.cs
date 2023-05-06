@@ -94,6 +94,8 @@ internal class LevelState : GameState
 
         AddUpdateSystem(fpsCounterSystem);
 
+        AddUpdateSystem(new AnimationOrientationSystem());
+        AddUpdateSystem(new AnimationSystem());
         AddRenderSystem(new RenderSystem());
     }
 

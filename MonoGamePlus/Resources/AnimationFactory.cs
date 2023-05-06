@@ -3,16 +3,16 @@
 using System.Collections.Generic;
 
 namespace MonoGamePlus.Resources;
-internal class AnimationFactory
+public class AnimationFactory
 {
-    private readonly TextureManager textures;
+    //private readonly TextureManager textures;
 
-    public AnimationFactory(TextureManager textures)
+    /*public AnimationFactory(TextureManager textures)
     {
         this.textures = textures;
-    }
+    }*/
 
-    public List<AnimationFrame> CreateImagesAnimation(List<string> images)
+    /*public List<AnimationFrame> CreateImagesAnimation(List<string> images)
     {
         var frames = new List<AnimationFrame>();
         foreach (var image in images)
@@ -39,16 +39,16 @@ internal class AnimationFactory
         }
 
         return frames;
-    }
+    }*/
 
-    public List<AnimationFrame> CreateSpriteSheetAnimationX(string image, int y, int start, int count, Vector2 size)
+    public static AnimationFrame[] CreateSpriteSheetAnimationX(/*string image, */int y, int start, int count, Vector2 size)
     {
         var frames = new List<AnimationFrame>();
         for (int x = 0; x < count; x++)
         {
             frames.Add(new AnimationFrame()
             {
-                Texture = textures[image],
+                //Texture = textures[image],
                 SourceRectangle = new Rectangle()
                 {
                     X = (int)(start + size.X * x),
@@ -58,10 +58,10 @@ internal class AnimationFactory
             });
         }
 
-        return frames;
+        return frames.ToArray();
     }
 
-    public List<AnimationFrame> CreateSpriteSheetAnimationY(string image, int x, int start, int count, Vector2 size)
+    /*public List<AnimationFrame> CreateSpriteSheetAnimationY(string image, int x, int start, int count, Vector2 size)
     {
         var frames = new List<AnimationFrame>();
         for (int y = 0; y < count; y++)
@@ -79,5 +79,5 @@ internal class AnimationFactory
         }
 
         return frames;
-    }
+    }*/
 }
