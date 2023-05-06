@@ -13,6 +13,10 @@ namespace TheImposter.GameStates.Level;
 internal class LevelState : GameState
 {
     private const float maxImposterDistance = 200.0f;
+    private const float playerBaseSpeed = 500.0f;
+    private const int npcCount = 100;
+
+    private readonly Color clearColor = new Color(70, 70, 70);
 
     private Entity imposter;
     private EntityControlSystem controlSystem;
@@ -58,8 +62,9 @@ internal class LevelState : GameState
     {
         CreateEntities();
         CreateSystems();
+        CreateUI();
 
-        Game.ClearColor = new Color(70, 70, 70);
+        Game.ClearColor = clearColor;
         Camera.Target = Player;
 
         base.Initialize();
@@ -69,7 +74,7 @@ internal class LevelState : GameState
     {
         controlSystem = new EntityControlSystem(Player)
         {
-            Speed = 500.0f + Upgrades.MoveSpeed,
+            Speed = playerBaseSpeed + Upgrades.MoveSpeed,
         };
 
         AddUpdateSystem(new TimePlayedTrackingSystem(this));
@@ -88,11 +93,16 @@ internal class LevelState : GameState
         LevelFactory factory = new(this);
         WorldGenerator generator = new(factory, this);
 
-        generator.Generate(100);
+        generator.Generate(npcCount);
 
         graph = generator.Graph;
         imposter = generator.Imposter;
 
         Player = factory.CreatePlayer(generator.Spawn);
+    }
+
+    private void CreateUI()
+    {
+
     }
 }
