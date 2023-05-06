@@ -130,7 +130,7 @@ internal class LevelFactory
         var npc = CreateCharacter(position, Color.White);
 
         npc.Add(new PathFollow());
-        npc.Get<Movement>().Speed = 150.0f;
+        npc.Get<Movement>().Speed = 80.0f;
 
         return npc;
     }

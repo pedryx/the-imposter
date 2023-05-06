@@ -47,13 +47,13 @@ public class RandomGraphWalkSystem : GameSystem<Transform, Movement, PathFollow>
             pathFollow.PathIndex++;
             if (pathFollow.PathIndex == pathFollow.Path.Length)
             {
+                pathFollow.WaitTime = Game.Random.NextSingle(waitMin, waitMax);
+                pathFollow.Speed = movement.Speed;
+                movement.Speed = 0.0f;
+
                 AssignPath(ref transform, ref movement, ref pathFollow);
             }
             movement.Direction = MathUtils.VectorToAngle(pathFollow.Path[pathFollow.PathIndex] - transform.Position);
-
-            pathFollow.WaitTime = Game.Random.NextSingle(waitMin, waitMax);
-            pathFollow.Speed = movement.Speed;
-            movement.Speed = 0.0f;
         }
 
         base.Update(elapsed, entity, ref transform, ref movement, ref pathFollow);

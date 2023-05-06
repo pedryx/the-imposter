@@ -5,19 +5,20 @@ using Microsoft.Xna.Framework;
 using MonoGamePlus;
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TheImposter.GameStates.Level;
 internal class WorldGenerator
 {
-    private const float doorWidth = 128.0f;
+    private const float doorWidth = 96.0f;
     private const float houseWidth = 3072.0f;
     private const float houseHeight = 2048.0f;
 
     private const float outsideWallsWidth = 32.0f;
     private const float insideWallsWidth = 16.0f;
 
-    private const int nodesPerRoomSize = 1;
-    private const float characterSize = 60.0f;
+    private const int nodesPerRoom = 100;
+    private const float characterSize = 64.0f;
 
     #region Mansion Constants
     private const float roomAWidth = houseWidth / 3.0f;
@@ -54,19 +55,24 @@ internal class WorldGenerator
         game = gameState.Game;
     }
 
-    public void Generate(int characterCount)
+    public void Generate(int npcCount)
     {
         Graph = new Graph();
         Spawn = new Vector2(houseWidth / 2.0f - roomBWidth / 2.0f, 0.0f);
 
         CreateFloor();
         CreateMansion();
+        SpawnNPCs(npcCount);
 
-        for (int i = 0; i < characterCount; i++)
+        Imposter = factory.CreateImposter(Graph.GetRandomNode(game.Random).ToVector2());
+    }
+
+    private void SpawnNPCs(int count)
+    {
+        for (int i = 0; i < count; i++)
         {
             factory.CreateNPC(Graph.GetRandomNode(game.Random).ToVector2(), Color.White);
         }
-        Imposter = factory.CreateImposter(Graph.GetRandomNode(game.Random).ToVector2());
     }
 
     private void CreateMansion()
@@ -208,118 +214,110 @@ internal class WorldGenerator
             insideWallsWidth);
         #endregion
         #region Mansion Graph Definition
+        var a1 = CreateDoorPoints(topLeft + new Vector2(doorOffsetASide, roomAHeight), false);
+        var a2 = CreateDoorPoints(topLeft + new Vector2(roomAWidth + roomAWidth / 2.0f, roomAHeight), false);
+        var a3 = CreateDoorPoints(topLeft + new Vector2(houseWidth - doorOffsetASide, roomAHeight), false);
+
+        var a4 = CreateDoorPoints(topLeft + new Vector2(doorOffsetASide, houseHeight - roomAHeight), false);
+        var a5 = CreateDoorPoints(topLeft + new Vector2(roomAWidth + roomAWidth / 2.0f, houseHeight - roomAHeight), false);
+        var a6 = CreateDoorPoints(topLeft + new Vector2(houseWidth - doorOffsetASide, houseHeight - roomAHeight), false);
+
+        var b1 = CreateDoorPoints(topLeft + new Vector2(roomBWidth, roomAHeight + hallHeight / 2.0f), true);
+        var b2 = CreateDoorPoints(topLeft + new Vector2(roomBWidth, houseHeight - (roomAHeight + hallHeight / 2.0f)), true);
+
+        var b3 = CreateDoorPoints(topLeft + new Vector2(houseWidth - roomBWidth, roomAHeight + hallHeight / 2.0f), true);
+        var b4 = CreateDoorPoints(topLeft + new Vector2(houseWidth - roomBWidth, houseHeight - (roomAHeight + hallHeight / 2.0f)), true);
+
+        var c1 = CreateDoorPoints(topLeft + new Vector2(roomBWidth + roomCWidth / 2.0f, roomAHeight + hallHeight), false);
+        var c2 = CreateDoorPoints(topLeft + new Vector2(roomBWidth + roomCWidth / 2.0f, roomAHeight + hallHeight + roomCHeight), false);
+
+        var c3 = CreateDoorPoints(topLeft + new Vector2(roomBWidth + roomCWidth / 2.0f + roomCWidth, roomAHeight + hallHeight), false);
+        var c4 = CreateDoorPoints(topLeft + new Vector2(roomBWidth + roomCWidth / 2.0f + roomCWidth, roomAHeight + hallHeight + roomCHeight), false);
+
         // top A rooms
         CreateRoom(
             topLeft,
             new Vector2(roomAWidth, roomAHeight),
-            new List<Vector2>()
-            {
-                topLeft + new Vector2(doorOffsetASide, roomAHeight),
-            });
+            a1);
         CreateRoom(
             topLeft + new Vector2(roomAWidth, 0.0f),
             new Vector2(roomAWidth, roomAHeight),
-            new List<Vector2>()
-            {
-                topLeft + new Vector2(roomAWidth + roomAWidth / 2.0f, roomAHeight),
-            });
+            a2);
         CreateRoom(
             topLeft + new Vector2(2.0f * roomAWidth, 0.0f),
             new Vector2(roomAWidth, roomAHeight),
-            new List<Vector2>()
-            {
-                topLeft + new Vector2(houseWidth - doorOffsetASide, roomAHeight),
-            });
+            a3);
 
         // bottom A rooms
         CreateRoom(
             topLeft + new Vector2(0.0f, roomAHeight + roomBHeight),
             new Vector2(roomAWidth, roomAHeight),
-            new List<Vector2>()
-            {
-                topLeft + new Vector2(doorOffsetASide, houseHeight - roomAHeight),
-            });
+            a4);
         CreateRoom(
             topLeft + new Vector2(roomAWidth, roomAHeight + roomBHeight),
             new Vector2(roomAWidth, roomAHeight),
-            new List<Vector2>()
-            {
-                topLeft + new Vector2(roomAWidth + roomAWidth / 2.0f, houseHeight - roomAHeight),
-            });
+            a5);
         CreateRoom(
             topLeft + new Vector2(2.0f * roomAWidth, roomAHeight + roomBHeight),
             new Vector2(roomAWidth, roomAHeight),
-            new List<Vector2>()
-            {
-                topLeft + new Vector2(houseWidth - doorOffsetASide, houseHeight - roomAHeight),
-            });
+            a6);
 
         // B rooms
         CreateRoom(
             topLeft + new Vector2(0.0f, roomAHeight),
             new Vector2(roomBWidth, roomBHeight),
-            new List<Vector2>()
-            {
-                topLeft + new Vector2(roomBWidth, roomAHeight + hallHeight / 2.0f),
-                topLeft + new Vector2(roomBWidth, houseHeight - (roomAHeight + hallHeight / 2.0f)),
-            });
+            Union(b1, b2));
         CreateRoom(
             topLeft + new Vector2(houseWidth - roomBWidth, roomAHeight),
             new Vector2(roomBWidth, roomBHeight),
-            new List<Vector2>()
-            {
-                topLeft + new Vector2(houseWidth - roomBWidth, roomAHeight + hallHeight / 2.0f),
-                topLeft + new Vector2(houseWidth - roomBWidth, houseHeight - (roomAHeight + hallHeight / 2.0f)),
-            });
+            Union(b3, b4));
 
         // C rooms
         CreateRoom(
             topLeft + new Vector2(roomBWidth, roomAHeight + hallHeight),
             new Vector2(roomCWidth, roomCHeight),
-            new List<Vector2>()
-            {
-                topLeft + new Vector2(roomBWidth + roomCWidth / 2.0f, roomAHeight + hallHeight),
-                topLeft + new Vector2(roomBWidth + roomCWidth / 2.0f, roomAHeight + hallHeight + roomCHeight),
-            });
+            Union(c1, c2));
         CreateRoom(
             topLeft + new Vector2(roomBWidth + roomCWidth, roomAHeight + hallHeight),
             new Vector2(roomCWidth, roomCHeight),
-            new List<Vector2>()
-            {
-                topLeft + new Vector2(roomBWidth + roomCWidth / 2.0f + roomCWidth, roomAHeight + hallHeight),
-                topLeft + new Vector2(roomBWidth + roomCWidth / 2.0f + roomCWidth, roomAHeight + hallHeight + roomCHeight),
-            });
+            Union(c3, c4));
 
         // halls
         CreateRoom(
             topLeft + new Vector2(roomBWidth, roomAHeight),
             new Vector2(hallWidth, hallHeight),
-            new List<Vector2>()
-            {
-                topLeft + new Vector2(doorOffsetASide, roomAHeight),
-                topLeft + new Vector2(roomAWidth + roomAWidth / 2.0f, roomAHeight),
-                topLeft + new Vector2(houseWidth - doorOffsetASide, roomAHeight),
-                topLeft + new Vector2(roomBWidth, roomAHeight + hallHeight / 2.0f),
-                topLeft + new Vector2(houseWidth - roomBWidth, roomAHeight + hallHeight / 2.0f),
-                topLeft + new Vector2(roomBWidth + roomCWidth / 2.0f, roomAHeight + hallHeight),
-                topLeft + new Vector2(roomBWidth + roomCWidth / 2.0f + roomCWidth, roomAHeight + hallHeight),
-            });
+            Union(a1, Union(a2, Union(a3, Union(b1, Union(c1, Union(c3, b3)))))));
 
         CreateRoom(
             topLeft + new Vector2(roomBWidth, roomAHeight + hallHeight + roomCHeight),
             new Vector2(hallWidth, hallHeight),
-            new List<Vector2>()
-            {
-                topLeft + new Vector2(roomBWidth + roomCWidth / 2.0f, roomAHeight + hallHeight + roomCHeight),
-                topLeft + new Vector2(roomBWidth + roomCWidth / 2.0f + roomCWidth, roomAHeight + hallHeight + roomCHeight),
-                topLeft + new Vector2(doorOffsetASide, houseHeight - roomAHeight),
-                topLeft + new Vector2(roomAWidth + roomAWidth / 2.0f, houseHeight - roomAHeight),
-                topLeft + new Vector2(houseWidth - doorOffsetASide, houseHeight - roomAHeight),
-                topLeft + new Vector2(roomBWidth, houseHeight - (roomAHeight + hallHeight / 2.0f)),
-                topLeft + new Vector2(houseWidth - roomBWidth, houseHeight - (roomAHeight + hallHeight / 2.0f)),
-            });
+            Union(a4, Union(a5, Union(a6, Union(b2, Union(c2, Union(c4, b4)))))));
         #endregion
     }
+
+    private List<Vector2> CreateDoorPoints(Vector2 doorPosition, bool vertical)
+    {
+        List<Vector2> points = new();
+
+        if (vertical)
+        {
+            points.Add(doorPosition - new Vector2(insideWallsWidth / 2.0f + characterSize / 2.0f, 0.0f));
+            points.Add(doorPosition + new Vector2(insideWallsWidth / 2.0f + characterSize / 2.0f, 0.0f));
+        }
+        else
+        {
+            points.Add(doorPosition - new Vector2(0.0f, insideWallsWidth / 2.0f + characterSize / 2.0f));
+            points.Add(doorPosition + new Vector2(0.0f, insideWallsWidth / 2.0f + characterSize / 2.0f));
+        }
+        AddNode(points[0]);
+        AddNode(points[1]);
+        Graph.AddEdge(points[0].ToPoint(), points[1].ToPoint());
+
+        return points;
+    }
+
+    private static List<Vector2> Union(List<Vector2> l1, List<Vector2> l2)
+        => l1.Union(l2).ToList();
 
     private void CreateFloor()
     {
@@ -336,18 +334,22 @@ internal class WorldGenerator
 
     private void CreateRoom(Vector2 offset, Vector2 size, List<Vector2> doors)
     {
-        List<Point> nodes = new((int)(size.X * size.Y / 10000.0f) * nodesPerRoomSize);
+        List<Point> nodes = new(nodesPerRoom);
         for (int i = 0; i < nodes.Capacity; i++)
         {
             AddNode(
                 game.Random.NextVector2(
-                    offset + new Vector2(characterSize),
-                    size - 2.0f * new Vector2(characterSize)),
+                    offset + new Vector2(characterSize) / 2.0f,
+                    size - new Vector2(characterSize)),
                 nodes);
         }
 
+        Rectangle rectangle = new Rectangle(offset.ToPoint(), size.ToPoint());
         foreach (var doorPosition in doors)
         {
+            if (!rectangle.Contains(doorPosition))
+                continue;
+
             AddNode(doorPosition, nodes);
         }
 

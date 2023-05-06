@@ -16,7 +16,7 @@ namespace TheImposter.GameStates.Level;
 internal class LevelState : GameState
 {
     private const float maxImposterDistance = 200.0f;
-    private const float playerBaseSpeed = 500.0f;
+    private const float playerBaseSpeed = 150.0f;
     private const int npcCount = 100;
     private const float time = 2.0f * 60.0f;
 
