@@ -1,3 +1,6 @@
-﻿Fonts:
-	"Storm Gust" by Hanzel Space licensed Free-for-personal-use: https://www.dafont.com/storm-gust.font
-	"Curse of the Zombie" by imagex licensed Free-for-personal-use: https://www.dafont.com/curse-of-the-zombie.font
+﻿Textures:
+	"dark background" by Indie Squid licensed CC-BY 3.0: https://opengameart.org/content/dark-night-full-moon-background
+
+Fonts:
+	"Storm Gust" by Hanzel Space licensed Free for personal use: https://www.dafont.com/storm-gust.font
+	"Curse of the Zombie" by imagex licensed Free for personal use: https://www.dafont.com/curse-of-the-zombie.font
