@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using MonoGamePlus.Events;
 using MonoGamePlus.Events.Events;
 using MonoGamePlus.Structures;
+using MonoGamePlus.UI;
 
 using System.Collections.Generic;
 
@@ -37,7 +38,7 @@ public abstract class GameState
     /// </summary>
     public Camera Camera { get; private set; }
     public EventManager Events { get; private set; } = new();
-    // TODO: UI
+    public UILayer UILayer { get; private set; }
 
     public Vector2 WorldSize { get; private set; }
     /// <summary>
@@ -55,6 +56,7 @@ public abstract class GameState
         renderSystems.OnItemAdd += Systems_OnItemAdd;
 
         WorldSize = worldSize;
+        UILayer = new UILayer(this);
     }
 
     public GameState()
@@ -94,6 +96,7 @@ public abstract class GameState
         {
             system.Run(elapsed);
         }
+        UILayer.Update(elapsed);
         Camera.Update(elapsed);
 
         updateSystems.Update();
@@ -109,11 +112,12 @@ public abstract class GameState
         {
             system.Run(elapsed);
         }
+        UILayer.Draw(elapsed);
     }
 
     protected internal virtual void Destroy()
     {
-        World.Destroy(ECSWorld);
+        //World.Destroy(ECSWorld);
     }
 
     /// <summary>
