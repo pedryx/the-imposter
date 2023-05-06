@@ -8,10 +8,10 @@ namespace MonoGamePlus.Components;
 /// </summary>
 public struct Appearance
 {
-    public Sprite Sprite;
+    public Sprite[] Sprites;
 
     public Appearance(Sprite sprite)
     {
-        Sprite = sprite;
+        Sprites = new Sprite[] { sprite };
     }
 }

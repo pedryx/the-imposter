@@ -20,7 +20,7 @@ internal class LevelState : GameState
     private const int npcCount = 100;
     private const float time = 2.0f * 60.0f;
 
-    private readonly Color clearColor = new Color(70, 70, 70);
+    private readonly Color clearColor = new(70, 70, 70);
 
     private Entity imposter;
     private EntityControlSystem controlSystem;

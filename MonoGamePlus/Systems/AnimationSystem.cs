@@ -16,8 +16,8 @@ public class AnimationSystem : GameSystem<Appearance, Animation>
         {
             animation.Elapsed -= animation.TimePerFrame;
 
-            appearance.Sprite.Texture = animation.Frames[animation.FrameIndex].Texture;
-            appearance.Sprite.SourceRectangle = animation.Frames[animation.FrameIndex].SourceRectangle;
+            //appearance.Sprites.Texture = animation.Frames[animation.FrameIndex].Texture;
+            //appearance.Sprites.SourceRectangle = animation.Frames[animation.FrameIndex].SourceRectangle;
 
             animation.FrameIndex++;
             if (animation.FrameIndex >= animation.Frames.Count)

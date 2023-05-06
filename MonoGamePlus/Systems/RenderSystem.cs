@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using MonoGamePlus.Components;
+using MonoGamePlus.Resources;
 
 namespace MonoGamePlus.Systems;
 /// <summary>
@@ -47,31 +48,32 @@ public class RenderSystem : GameSystem
         if (useCamera)
         {
             Game.SpriteBatch.Begin(
-                transformMatrix: GameState.Camera.GetTransformMatrix(),
-                sortMode: SpriteSortMode.FrontToBack);
+                transformMatrix: GameState.Camera.GetTransformMatrix());
         }
         else
         {
-            Game.SpriteBatch.Begin(
-                sortMode: SpriteSortMode.FrontToBack);
+            Game.SpriteBatch.Begin();
         }
 
         ECSWorld.Query(in query, (ref Transform transform, ref Appearance appearance) =>
         {
-            DrawEntity(ref transform, ref appearance, clipping);
+            foreach (var sprite in appearance.Sprites)
+            {
+                DrawSprite(ref transform, sprite, clipping);
+            }
         });
 
         Game.SpriteBatch.End();
     }
 
-    private void DrawEntity(ref Transform transform, ref Appearance appearance, bool clipping = true)
+    private void DrawSprite(ref Transform transform, Sprite sprite, bool clipping = true)
     {
         if (clipping)
         {
-            float maxDistance = Game.Resolution.X + appearance.Sprite.GetSize().Length();
+            float maxDistance = Game.Resolution.X + sprite.GetSize().Length();
             float distance = Vector2.Distance(
                 GameState.Camera.Position,
-                appearance.Sprite.Position + transform.Position);
+                sprite.Position + transform.Position);
 
             if (distance >= maxDistance)
             {
@@ -79,6 +81,6 @@ public class RenderSystem : GameSystem
             }
         }
 
-        Game.SpriteBatch.Draw(appearance.Sprite, transform.Position, transform.Scale, transform.Rotation);
+        Game.SpriteBatch.Draw(sprite, transform.Position, transform.Scale, transform.Rotation);
     }
 }

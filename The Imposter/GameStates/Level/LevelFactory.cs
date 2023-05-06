@@ -7,6 +7,8 @@ using MonoGamePlus;
 using MonoGamePlus.Components;
 using MonoGamePlus.Resources;
 
+using System.Collections.Generic;
+
 namespace TheImposter.GameStates.Level;
 internal class LevelFactory
 {
@@ -19,6 +21,85 @@ internal class LevelFactory
         ecsWorld = gameState.ECSWorld;
     }
 
+    private Sprite CreateCharacterSprite(Color color, string name)
+        => new Sprite(game.Textures[name])
+        {
+            SourceRectangle = new Rectangle(0, 128, 64, 64),
+            Origin = new Vector2(32, 38),
+            Color = color,
+        };
+
+    private Sprite[] CreateCharacterSprites(Color color, bool clothes)
+    {
+        const float glovesChance = 0.33f;
+        
+        List<Sprite> sprites = new() { CreateCharacterSprite(color, "BODY_male") };
+
+        if (clothes)
+        {
+            #region Random Clothes
+            int feetIndex = game.Random.Next(3);
+            if (feetIndex == 1)
+                sprites.Add(CreateCharacterSprite(color, "FEET_plate_armor_shoes"));
+            else if (feetIndex == 2)
+                sprites.Add(CreateCharacterSprite(color, "FEET_shoes_brown"));
+
+            int legsindex = game.Random.Next(4);
+            if (legsindex == 1)
+                sprites.Add(CreateCharacterSprite(color, "LEGS_pants_greenish"));
+            else if (legsindex == 2)
+                sprites.Add(CreateCharacterSprite(color, "LEGS_plate_armor_pants"));
+            else if (legsindex == 3)
+                sprites.Add(CreateCharacterSprite(color, "LEGS_robe_skirt"));
+
+            int torsoIndex = game.Random.Next(10);
+            if (torsoIndex == 1)
+                sprites.Add(CreateCharacterSprite(color, "TORSO_chain_armor_jacket_purple"));
+            else if (torsoIndex == 2)
+                sprites.Add(CreateCharacterSprite(color, "TORSO_chain_armor_torso"));
+            else if (torsoIndex == 3)
+                sprites.Add(CreateCharacterSprite(color, "TORSO_leather_armor_bracers"));
+            else if (torsoIndex == 4)
+                sprites.Add(CreateCharacterSprite(color, "TORSO_leather_armor_shirt_white"));
+            else if (torsoIndex == 5)
+                sprites.Add(CreateCharacterSprite(color, "TORSO_leather_armor_shoulders"));
+            else if (torsoIndex == 6)
+                sprites.Add(CreateCharacterSprite(color, "TORSO_leather_armor_torso"));
+            else if (torsoIndex == 7)
+                sprites.Add(CreateCharacterSprite(color, "TORSO_plate_armor_arms_shoulders"));
+            else if (torsoIndex == 8)
+                sprites.Add(CreateCharacterSprite(color, "TORSO_plate_armor_torso"));
+            else if (torsoIndex == 9)
+                sprites.Add(CreateCharacterSprite(color, "TORSO_robe_shirt_brown"));
+
+            int beltIndex = game.Random.Next(3);
+            if (beltIndex == 1)
+                sprites.Add(CreateCharacterSprite(color, "BELT_leather"));
+            else if (beltIndex == 2)
+                sprites.Add(CreateCharacterSprite(color, "BELT_rope"));
+
+            int headIndex = game.Random.Next(7);
+            if (headIndex == 1)
+                sprites.Add(CreateCharacterSprite(color, "HEAD_hair_blonde"));
+            else if (headIndex == 2)
+                sprites.Add(CreateCharacterSprite(color, "HEAD_chain_armor_helmet"));
+            else if (headIndex == 3)
+                sprites.Add(CreateCharacterSprite(color, "HEAD_chain_armor_hood"));
+            else if (headIndex == 4)
+                sprites.Add(CreateCharacterSprite(color, "HEAD_leather_armor_hat"));
+            else if (headIndex == 5)
+                sprites.Add(CreateCharacterSprite(color, "HEAD_plate_armor_helmet"));
+            else if (headIndex == 6)
+                sprites.Add(CreateCharacterSprite(color, "HEAD_robe_hood"));
+
+            if (game.Random.NextSingle() < glovesChance)
+                sprites.Add(CreateCharacterSprite(color, "HANDS_plate_armor_gloves"));
+            #endregion
+        }
+
+        return sprites.ToArray();
+    }
+
     public Entity CreateFloorTile(Vector2 position)
         => ecsWorld.Create(
             new Transform(position),
@@ -29,15 +110,13 @@ internal class LevelFactory
             }),
             new Background());
 
-    private Entity CreateCharacter(Vector2 position, Color color)
+    private Entity CreateCharacter(Vector2 position, Color color, bool clothes = true)
         => ecsWorld.Create(
             new Transform(position),
-            new Appearance(new Sprite(game.Textures["BODY_male"])
+            new Appearance()
             {
-                SourceRectangle = new Rectangle(0, 128, 64, 64),
-                Origin = new Vector2(32, 38),
-                Color = color,
-            }),
+                Sprites = CreateCharacterSprites(color, clothes),
+            },
             new Movement());
 
     public Entity CreateNPC(Vector2 position, Color color)
@@ -68,7 +147,7 @@ internal class LevelFactory
     {
         var imposter = CreateNPC(position, new Color(80, 80, 80));
 
-        imposter.Get<Appearance>().Sprite.Texture = game.Textures["BODY_skeleton"];
+        imposter.Get<Appearance>().Sprites[0].Texture = game.Textures["BODY_skeleton"];
         imposter.Add<Foreground>();
 
         return imposter;
