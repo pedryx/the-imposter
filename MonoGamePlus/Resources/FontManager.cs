@@ -11,7 +11,10 @@ public class FontManager : ResourceManager<SpriteFont>
     private const int bitmapSize = 1024;
 
     public FontManager(MGPGame game)
-        : base(game, "Fonts") { }
+        : base(game, "Fonts", true) { }
+
+    protected override string GetFile(string name)
+        => base.GetFile(name.Split(';').First());
 
     public override SpriteFont Load(string path, string name)
     {
