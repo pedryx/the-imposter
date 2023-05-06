@@ -325,7 +325,11 @@ internal class WorldGenerator
         List<Point> nodes = new((int)(size.X * size.Y / 10000.0f) * nodesPerRoomSize);
         for (int i = 0; i < nodes.Capacity; i++)
         {
-            AddNode(game.Random.NextVector2(offset + new Vector2(characterSize), size - 2.0f * new Vector2(characterSize)), nodes);
+            AddNode(
+                game.Random.NextVector2(
+                    offset + new Vector2(characterSize),
+                    size - 2.0f * new Vector2(characterSize)),
+                nodes);
         }
 
         foreach (var doorPosition in doors)
