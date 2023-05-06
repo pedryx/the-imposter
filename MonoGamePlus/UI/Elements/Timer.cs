@@ -13,6 +13,7 @@ public class Timer : UIElement
     protected override void Initialize()
     {
         AddChild(Label);
+        Label.SpriteText.Origin = Label.SpriteText.Font.MeasureString("00:00") / 2.0f;
     }
 
     public override void Update(float elapsed, Vector2 position)

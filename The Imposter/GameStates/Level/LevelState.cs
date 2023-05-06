@@ -5,7 +5,10 @@ using Microsoft.Xna.Framework;
 
 using MonoGamePlus;
 using MonoGamePlus.Components;
+using MonoGamePlus.Resources;
 using MonoGamePlus.Systems;
+using MonoGamePlus.UI;
+using MonoGamePlus.UI.Elements;
 
 using TheImposter.Systems;
 
@@ -15,6 +18,7 @@ internal class LevelState : GameState
     private const float maxImposterDistance = 200.0f;
     private const float playerBaseSpeed = 500.0f;
     private const int npcCount = 100;
+    private const float time = 2.0f * 60.0f;
 
     private readonly Color clearColor = new Color(70, 70, 70);
 
@@ -103,6 +107,17 @@ internal class LevelState : GameState
 
     private void CreateUI()
     {
-
+        Timer timer = new()
+        {
+            Label = new Label(new SpriteText(Game.Fonts["Curse of the Zombie;46"], "", Color.White)),
+            Offset = new Vector2(Game.Resolution.X / 2.0f, 60.0f),
+            Time = time,
+        };
+        timer.OnFinish += (sender, e) =>
+        {
+            Game.RemoveGameState(this);
+            Game.AddGameState(new GameOverState(Statistics, "TIME  IS  UP!"));
+        };
+        UILayer.AddElement(timer);
     }
 }

@@ -37,7 +37,7 @@ internal class LevelFactory
 
     public Entity CreatePlayer(Vector2 position)
     {
-        var player = CreateCharacter(position, Color.White);
+        var player = CreateCharacter(position, Color.Red);
 
         player.Add(new Collider(player.Get<Appearance>().Sprite.GetSize())
         {
