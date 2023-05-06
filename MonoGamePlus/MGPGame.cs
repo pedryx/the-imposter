@@ -122,6 +122,10 @@ public class MGPGame : Game
         Sounds = new SoundManager(this);
         Fonts = new FontManager(this);
 
+        Textures.LoadAll();
+        Sounds.LoadAll();
+        Fonts.LoadAll();
+
         foreach (var gameState in activeStates)
         {
             gameState.Initialize(this);
@@ -140,6 +144,7 @@ public class MGPGame : Game
         {
             gameState.Update(elapsed);
         }
+        activeStates.Update();
 
         base.Update(gameTime);
     }
