@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Input;
 
 using MonoGamePlus;
 using MonoGamePlus.Components;
+
+using TheImposter.GameStates;
 using TheImposter.GameStates.Level;
 
 namespace TheImposter.Systems;
@@ -36,11 +38,13 @@ internal class PlayerControlSystem : GameSystem
 
             if (distance <= MinDistance)
             {
-                // TODO: stage win
+                Game.RemoveGameState(GameState);
+                Game.AddGameState(new StageWinState(levelState.Statistics, levelState.Upgrades, levelState.Stage));
             }
             else
             {
-                // TODO: game over
+                Game.RemoveGameState(GameState);
+                Game.AddGameState(new GameOverState(levelState.Statistics, "THAT  WAS  NOT  THE  IMPOSTER!"));
             }
         }
 

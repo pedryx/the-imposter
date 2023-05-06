@@ -20,12 +20,12 @@ internal class TitleState : GameState
             Position = new Vector2(-100.0f)
         }));
 
-        UILayer.AddElement(new Label(new SpriteText(Game.Fonts["Storm Gust;128"], "The Imposter", Color.White))
+        UILayer.AddElement(new Label(new SpriteText(Game.Fonts["Storm Gust;200"], "The Imposter", Color.White))
         {
-            Offset = new Vector2(Game.Resolution.X / 2.0f, 100.0f),
+            Offset = new Vector2(Game.Resolution.X / 2.0f, 200.0f),
         });
 
-        StackPanel panel = new StackPanel(Game.Resolution / 2.0f + new Vector2(0.0f, 100.0f))
+        StackPanel panel = new StackPanel(Game.Resolution / 2.0f + new Vector2(0.0f, 150.0f))
         {
             Padding = 40.0f,
         };

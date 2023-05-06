@@ -8,10 +8,12 @@ namespace TheImposter.GameStates;
 internal class GameOverState : GameState
 {
     private readonly Statistics statistics = new();
+    private readonly string reason;
 
-    public GameOverState(Statistics statistics)
+    public GameOverState(Statistics statistics, string reason)
     {
         this.statistics = statistics;
+        this.reason = reason;
     }
 
     protected override void Initialize()
@@ -24,10 +26,14 @@ internal class GameOverState : GameState
 
         UILayer.AddElement(new Label(new SpriteText(Game.Fonts["Storm Gust;128"], "Game Over", Color.White))
         {
-            Offset = new Vector2(Game.Resolution.X / 2.0f, 100.0f),
+            Offset = new Vector2(Game.Resolution.X / 2.0f, 90.0f),
+        });
+        UILayer.AddElement(new Label(new SpriteText(Game.Fonts["Curse of the Zombie;32"], reason, Color.Gray))
+        {
+            Offset = new Vector2(Game.Resolution.X / 2.0f, 240.0f),
         });
 
-        StackPanel panel = new StackPanel(Game.Resolution / 2.0f + new Vector2(0.0f, 100.0f))
+        StackPanel panel = new StackPanel(Game.Resolution / 2.0f + new Vector2(0.0f, 170.0f))
         {
             Padding = 40.0f,
         };
@@ -50,6 +56,6 @@ internal class GameOverState : GameState
         base.Initialize();
     }
 
-    private Label CreateLabel(string text)
-        => new Label(new SpriteText(Game.Fonts["Curse of the Zombie;48"], text, Color.Gray));
+    private Label CreateLabel(string text, int size = 48)
+        => new Label(new SpriteText(Game.Fonts[$"Curse of the Zombie;{size}"], text, Color.Gray));
 }

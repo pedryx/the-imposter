@@ -8,7 +8,7 @@ using System.Linq;
 namespace MonoGamePlus.Resources;
 public class FontManager : ResourceManager<SpriteFont>
 {
-    private const int bitmapSize = 1024;
+    private const int bitmapSize = 2048;
 
     public FontManager(MGPGame game)
         : base(game, "Fonts", true) { }
