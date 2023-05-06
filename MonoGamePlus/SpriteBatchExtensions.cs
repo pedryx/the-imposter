@@ -35,6 +35,26 @@ public static class SpriteBatchExtensions
         );
     }
 
+    public static void Draw(
+        this SpriteBatch spriteBatch,
+        SpriteText spriteText,
+        Vector2 positionOffset = default,
+        float scaleOffset = 1.0f,
+        float rotationOffset = 0.0f)
+    {
+        spriteBatch.DrawString(
+            spriteText.Font,
+            spriteText.Text,
+            spriteText.Position + positionOffset,
+            spriteText.Color,
+            spriteText.Rotation + rotationOffset,
+            spriteText.Origin,
+            spriteText.Scale * scaleOffset,
+            spriteText.SpriteEffects,
+            spriteText.LayerDepth
+        );
+    }
+
     /// <summary>
     /// Render sprite.
     /// </summary>

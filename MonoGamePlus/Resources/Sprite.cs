@@ -19,6 +19,9 @@ public struct Sprite
 
     public Vector2 GetSize()
     {
+        if (Texture == null)
+            return Vector2.Zero;
+
         Vector2 size = SourceRectangle.HasValue ? SourceRectangle.Value.Size.ToVector2() : Texture.GetSize();
         return size * Scale;
     }
