@@ -7,7 +7,7 @@ using MonoGamePlus.Systems;
 
 using TheImposter.Systems;
 
-namespace TheImposter.GameStates;
+namespace TheImposter.GameStates.Level;
 internal class LevelState : GameState
 {
     private EntityControlSystem controlSystem;

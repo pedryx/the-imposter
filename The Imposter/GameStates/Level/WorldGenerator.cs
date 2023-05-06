@@ -6,7 +6,7 @@ using MonoGamePlus;
 
 using System.Collections.Generic;
 
-namespace TheImposter.GameStates;
+namespace TheImposter.GameStates.Level;
 internal class WorldGenerator
 {
     private const float doorWidth = 200.0f;
@@ -26,7 +26,7 @@ internal class WorldGenerator
     private const float doorWallABig = (roomAWidth - doorWidth) / 2.0f;
 
     private const float roomBWidth = houseWidth / 5.0f;
-    private const float roomBHeight = houseHeight  - 2.0f * roomAHeight;
+    private const float roomBHeight = houseHeight - 2.0f * roomAHeight;
     private const float doorWallB = (roomBHeight - roomCHeight - 2.0f * doorWidth) / 4.0f;
 
     private const float roomCWidth = (houseWidth - 2.0f * roomBWidth) / 2.0f;
@@ -59,7 +59,7 @@ internal class WorldGenerator
         Graph = new Graph();
 
         CreateMansion();
-        Spawn = new Vector2(houseWidth / 2.0f - (roomBWidth / 2.0f), 0.0f);
+        Spawn = new Vector2(houseWidth / 2.0f - roomBWidth / 2.0f, 0.0f);
 
         for (int i = 0; i < characterCount; i++)
         {
@@ -322,7 +322,7 @@ internal class WorldGenerator
 
     private void CreateRoom(Vector2 offset, Vector2 size, List<Vector2> doors)
     {
-        List<Point> nodes = new((int)((size.X * size.Y) / 10000.0f) * nodesPerRoomSize);
+        List<Point> nodes = new((int)(size.X * size.Y / 10000.0f) * nodesPerRoomSize);
         for (int i = 0; i < nodes.Capacity; i++)
         {
             AddNode(game.Random.NextVector2(offset + new Vector2(characterSize), size - 2.0f * new Vector2(characterSize)), nodes);

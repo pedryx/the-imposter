@@ -7,7 +7,7 @@ using MonoGamePlus;
 using MonoGamePlus.Components;
 using MonoGamePlus.Resources;
 
-namespace TheImposter.GameStates;
+namespace TheImposter.GameStates.Level;
 internal class LevelFactory
 {
     private readonly MGPGame game;

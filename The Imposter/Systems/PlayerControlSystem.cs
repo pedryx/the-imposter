@@ -5,8 +5,7 @@ using Microsoft.Xna.Framework.Input;
 
 using MonoGamePlus;
 using MonoGamePlus.Components;
-
-using TheImposter.GameStates;
+using TheImposter.GameStates.Level;
 
 namespace TheImposter.Systems;
 internal class PlayerControlSystem : GameSystem
