@@ -42,7 +42,7 @@ public class RenderSystem : GameSystem
         base.Update(elapsed);
     }
 
-    private void DrawLayer(in QueryDescription query, bool useCamera = true, bool clipping = true)
+    private void DrawLayer(in QueryDescription query, bool useCamera = true, bool clipping = false)
     {
         if (useCamera)
         {
