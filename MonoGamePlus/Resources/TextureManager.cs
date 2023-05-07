@@ -84,16 +84,16 @@ public class TextureManager : ResourceManager<Texture2D>
         return texture;
     }
 
-    private Color Interlope(Color start, Color end, float value)
-        => new Color(
+    private static Color Interlope(Color start, Color end, float value)
+        => new(
             Interlope(start.R, end.R, value),
             Interlope(start.G, end.G, value),
             Interlope(start.B, end.B, value),
             Interlope(start.A, end.A, value));
 
-    private byte Interlope(byte start, byte end, float value)
+    private static byte Interlope(byte start, byte end, float value)
         => (byte)((end - start) * value + start);
 
-    private float EaseInQuad(float x)
+    private static float EaseInQuad(float x)
         => x * x;
 }

@@ -20,7 +20,7 @@ internal class LevelState : GameState
     private const float maxImposterDistance = 100.0f;
     private const float playerBaseSpeed = 150.0f;
     private const int npcCount = 50;
-    private const float time = 2.0f * 60.0f;
+    private const float time = 2.5f * 60.0f;
 
     public const int FinalStage = 12;
     public const float StartVisibility = 0.7f;
@@ -30,8 +30,6 @@ internal class LevelState : GameState
 
     private List<Entity> imposters;
     private EntityControlSystem controlSystem;
-    // TODO: remove FPS counter
-    private FPSCounterSystem fpsCounterSystem;
     private Label imposterCountLabel;
     private LevelFactory factory;
 
@@ -120,8 +118,6 @@ internal class LevelState : GameState
             Speed = playerBaseSpeed + Upgrades.MoveSpeed,
         };
 
-        fpsCounterSystem = new FPSCounterSystem();
-
         DelayedStartSystem delayedStartSystem = new(0.15f);
         delayedStartSystem.OnDelayedStart += (sender, e) => LevelMusic.Play(Game);
 
@@ -133,13 +129,11 @@ internal class LevelState : GameState
         AddUpdateSystem(new CollisionSystem());
         AddUpdateSystem(new PlayerControlSystem(this));
         AddUpdateSystem(delayedStartSystem);
-        AddUpdateSystem(new NoiseSystem(Player, maxImposterDistance / 2.0f));
+        AddUpdateSystem(new NoiseSystem(Player, maxImposterDistance / 4.0f));
         AddUpdateSystem(new FogSystem(factory));
-
-        AddUpdateSystem(fpsCounterSystem);
-
         AddUpdateSystem(new AnimationOrientationSystem());
         AddUpdateSystem(new AnimationSystem());
+
         AddRenderSystem(new RenderSystem());
     }
 

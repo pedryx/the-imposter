@@ -12,7 +12,7 @@ internal class PauseDialogState : GameState
 {
     private const string confirmText = "OK";
     private const string fontName = "The Macabre";
-    private const float lineWidth = 400;
+    private const float lineWidth = 380;
     private const string dialogTextureName = "PauseMenu";
 
     private readonly Color color = Color.White;
@@ -36,7 +36,7 @@ internal class PauseDialogState : GameState
                 state.Enable = false;
         }
 
-        messageFont = Game.Fonts[$"{fontName};32"];
+        messageFont = Game.Fonts[$"{fontName};30"];
         confirmFont = Game.Fonts[$"{fontName};64"];
 
         WrapText();
@@ -87,7 +87,7 @@ internal class PauseDialogState : GameState
 
     private void CreateUI()
     {
-        Image image = new(new Sprite(Game.Textures[dialogTextureName], 0.8f))
+        Image image = new(new Sprite(Game.Textures[dialogTextureName], 0.9f))
         {
             Offset = Game.Resolution / 2.0f + new Vector2(0.0f, 40.0f),
         };
@@ -95,15 +95,16 @@ internal class PauseDialogState : GameState
 
         Label label = new(new SpriteText(messageFont, message, color))
         {
-            Offset = Game.Resolution / 2.0f,
+            Offset = Game.Resolution / 2.0f + new Vector2(0.0f, -image.Size.Y / 4.0f - 15.0f),
         };
+        label.SpriteText.Origin.Y = 0.0f;
         UILayer.AddElement(label);
 
-        Button button = new()
-        {
-            Offset = Game.Resolution / 2.0f + new Vector2(0.0f, label.Size.Y / 2.0f + 50.0f),
-        };
+        Button button = new();
         button.Label.SpriteText = new SpriteText(confirmFont, confirmText, color);
+        button.Offset = new Vector2(
+            Game.Resolution.X / 2.0f,
+            image.Offset.Y + image.Size.Y / 2.0f - button.Label.Size.Y + 10.0f);
         button.HoverColor = Color.Yellow;
         button.OnClick += (sender, e) =>
         {

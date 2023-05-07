@@ -28,10 +28,6 @@ public class MGPGame : Game
     public Vector2 Resolution => new(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight);
 
     /// <summary>
-    /// Master seed for random number generation.
-    /// </summary>
-    public int Seed { get; private set; }
-    /// <summary>
     /// Graphics settings.
     /// </summary>
     public GraphicsDeviceManager Graphics { get; private set; }
@@ -46,7 +42,6 @@ public class MGPGame : Game
     public TextureManager Textures { get; private set; }
     public SoundManager Sounds { get; private set; }
     public FontManager Fonts { get; private set; }
-    // TODO: statistics
 
     /// <summary>
     /// Color used for clearing graphics buffer at the start of <see cref="Draw(GameTime)"/>.
@@ -61,10 +56,9 @@ public class MGPGame : Game
     /// Create new MonoGamePlus Game.
     /// </summary>
     /// <param name="seed">Master seed for random number generation.</param>
-    public MGPGame(Vector2 resolution, int seed = 0)
+    public MGPGame(Vector2 resolution, int? seed = null)
     {
-        Seed = seed;
-        Random = new Random(Seed);
+        Random = seed == null ? new Random() : new Random(seed.Value);
         Graphics = new GraphicsDeviceManager(this)
         {
             PreferredBackBufferWidth = (int)resolution.X,
