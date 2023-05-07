@@ -158,7 +158,7 @@ internal class LevelState : GameState
     {
         Timer timer = new()
         {
-            Label = new Label(new SpriteText(Game.Fonts["Curse of the Zombie;46"], "", Color.White)),
+            Label = new Label(new SpriteText(Game.Fonts["Curse of the Zombie;46"], "00:00", Color.White)),
             Offset = new Vector2(Game.Resolution.X / 2.0f, 60.0f),
             Time = time,
         };
@@ -168,6 +168,14 @@ internal class LevelState : GameState
             Game.AddGameState(new GameOverState(Statistics, "TIME  IS  UP!"));
         };
         UILayer.AddElement(timer);
+
+        UILayer.AddElement(new Label(
+            new SpriteText(Game.Fonts["Curse of the Zombie;32"],
+            Stage.ToString(),
+            Color.White))
+        {
+            Offset = new Vector2(Game.Resolution.X / 2.0f, timer.Label.Size.Y + timer.Offset.Y + 10.0f),
+        });
 
         if (Stage >= 2)
         {
