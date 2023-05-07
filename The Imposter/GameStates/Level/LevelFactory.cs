@@ -9,6 +9,8 @@ using MonoGamePlus.Resources;
 
 using System.Collections.Generic;
 
+using TheImposter.Components;
+
 namespace TheImposter.GameStates.Level;
 internal class LevelFactory
 {
@@ -149,9 +151,9 @@ internal class LevelFactory
         return player;
     }
 
-    public Entity CreateImposter(Vector2 position, bool clothes, bool skeleton, bool movement, bool animation)
+    public Entity CreateImposter(Vector2 position, bool clothes, bool skeleton, bool movement, bool animation, bool noise)
     {
-        var imposter = CreateNPC(position, new Color(80, 80, 80), clothes);
+        var imposter = CreateNPC(position, Color.White, clothes);
 
         if (skeleton)
             imposter.Get<Appearance>().Sprites[0].Texture = game.Textures["BODY_skeleton"];
@@ -159,6 +161,12 @@ internal class LevelFactory
             imposter.Remove<Movement>();
         if (!animation)
             imposter.Remove<Animation>();
+        if (noise)
+            imposter.Add(new Noise()
+            {
+                Sound = game.Sounds["ghost"],
+                Cooldown = 5.0f,
+            });
         imposter.Add<Foreground>();
 
 

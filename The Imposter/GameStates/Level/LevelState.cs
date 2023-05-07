@@ -21,7 +21,7 @@ internal class LevelState : GameState
     private const float playerBaseSpeed = 150.0f;
     private const int npcCount = 100;
     private const float time = 3.0f * 60.0f;
-    private const int finalStage = 10;
+    private const int finalStage = 12;
 
     private readonly Color clearColor = new(70, 70, 70);
 
@@ -124,6 +124,7 @@ internal class LevelState : GameState
         AddUpdateSystem(new CollisionSystem());
         AddUpdateSystem(new PlayerControlSystem(this));
         AddUpdateSystem(delayedStartSystem);
+        AddUpdateSystem(new NoiseSystem(Player, maxImposterDistance / 2.0f));
 
         AddUpdateSystem(fpsCounterSystem);
 
@@ -143,7 +144,8 @@ internal class LevelState : GameState
             Stage == 3 || Stage == 4 || Stage >= 7,
             Stage < 5,
             Stage != 7 && Stage != 8,
-            Stage != 9 && Stage != 10);
+            Stage != 9 && Stage != 10,
+            Stage >= 11);
 
         graph = generator.Graph;
         imposters = new List<Entity>(generator.Imposters);

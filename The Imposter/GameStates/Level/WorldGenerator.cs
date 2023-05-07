@@ -53,7 +53,14 @@ internal class WorldGenerator
         game = gameState.Game;
     }
 
-    public void Generate(int npcCount, int imposterCount, bool impostersClothes, bool imposterSkeleton, bool imposterMovement, bool imposterAnimation)
+    public void Generate(
+        int npcCount,
+        int imposterCount,
+        bool impostersClothes,
+        bool imposterSkeleton,
+        bool imposterMovement,
+        bool imposterAnimation,
+        bool imposterNoise)
     {
         Graph = new Graph();
         Spawn = new Vector2(houseWidth / 2.0f - roomBWidth / 2.0f, 0.0f);
@@ -61,15 +68,27 @@ internal class WorldGenerator
         CreateFloor();
         CreateMansion();
         SpawnNPCs(npcCount);
-        SpawnImposters(imposterCount, impostersClothes, imposterSkeleton, imposterMovement, imposterAnimation);
+        SpawnImposters(
+            imposterCount,
+            impostersClothes,
+            imposterSkeleton,
+            imposterMovement,
+            imposterAnimation,
+            imposterNoise);
     }
 
-    private void SpawnImposters(int count, bool clothes, bool skeleton, bool movement, bool animation)
+    private void SpawnImposters(int count, bool clothes, bool skeleton, bool movement, bool animation, bool noise)
     {
         Imposters = new Entity[count];
         for (int i = 0; i < count; i++)
         {
-            Imposters[i] = factory.CreateImposter(Graph.GetRandomNode(game.Random).ToVector2(), clothes, skeleton, movement, animation);
+            Imposters[i] = factory.CreateImposter(
+                Graph.GetRandomNode(game.Random).ToVector2(),
+                clothes,
+                skeleton,
+                movement,
+                animation,
+                noise);
         }
     }
 
