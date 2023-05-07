@@ -8,3 +8,5 @@ Fonts:
 	"Storm Gust" by Hanzel Space licensed Free for personal use: https://www.dafont.com/storm-gust.font
 	"Curse of the Zombie" by imagex licensed Free for personal use: https://www.dafont.com/curse-of-the-zombie.font
 	"The Macabre" by Chequered Ink licensed Free for personal use: https://www.dafont.com/the-macabre.font
+
+chat GPT - better dialogs

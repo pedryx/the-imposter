@@ -46,12 +46,12 @@ internal class LevelFactory
             else if (feetIndex == 2)
                 sprites.Add(CreateCharacterSprite(color, "FEET_shoes_brown"));
 
-            int legsIndex = game.Random.Next(4);
-            if (legsIndex == 1)
+            int legsIndex = game.Random.Next(3);
+            if (legsIndex == 0)
                 sprites.Add(CreateCharacterSprite(color, "LEGS_pants_greenish"));
-            else if (legsIndex == 2)
+            else if (legsIndex == 1)
                 sprites.Add(CreateCharacterSprite(color, "LEGS_plate_armor_pants"));
-            else if (legsIndex == 3)
+            else if (legsIndex == 2)
                 sprites.Add(CreateCharacterSprite(color, "LEGS_robe_skirt"));
 
             int torsoIndex = game.Random.Next(10);
@@ -80,7 +80,7 @@ internal class LevelFactory
             else if (beltIndex == 2)
                 sprites.Add(CreateCharacterSprite(color, "BELT_rope"));
 
-            int headIndex = game.Random.Next(7);
+            int headIndex = game.Random.Next(6);
             if (headIndex == 1)
                 sprites.Add(CreateCharacterSprite(color, "HEAD_hair_blonde"));
             else if (headIndex == 2)
@@ -89,9 +89,9 @@ internal class LevelFactory
                 sprites.Add(CreateCharacterSprite(color, "HEAD_chain_armor_hood"));
             else if (headIndex == 4)
                 sprites.Add(CreateCharacterSprite(color, "HEAD_leather_armor_hat"));
+            //else if (headIndex == 5)
+            // sprites.Add(CreateCharacterSprite(color, "HEAD_plate_armor_helmet"));
             else if (headIndex == 5)
-                sprites.Add(CreateCharacterSprite(color, "HEAD_plate_armor_helmet"));
-            else if (headIndex == 6)
                 sprites.Add(CreateCharacterSprite(color, "HEAD_robe_hood"));
 
             if (game.Random.NextSingle() < glovesChance)
@@ -125,9 +125,9 @@ internal class LevelFactory
                 StartIndex = 1,
             });
 
-    public Entity CreateNPC(Vector2 position, Color color)
+    public Entity CreateNPC(Vector2 position, Color color, bool clothes = true)
     {
-        var npc = CreateCharacter(position, Color.White);
+        var npc = CreateCharacter(position, Color.White, clothes);
 
         npc.Add(new PathFollow());
         npc.Get<Movement>().Speed = 80.0f;
@@ -149,12 +149,18 @@ internal class LevelFactory
         return player;
     }
 
-    public Entity CreateImposter(Vector2 position)
+    public Entity CreateImposter(Vector2 position, bool clothes, bool skeleton, bool movement, bool animation)
     {
-        var imposter = CreateNPC(position, new Color(80, 80, 80));
+        var imposter = CreateNPC(position, new Color(80, 80, 80), clothes);
 
-        imposter.Get<Appearance>().Sprites[0].Texture = game.Textures["BODY_skeleton"];
+        if (skeleton)
+            imposter.Get<Appearance>().Sprites[0].Texture = game.Textures["BODY_skeleton"];
+        if (!movement)
+            imposter.Remove<Movement>();
+        if (!animation)
+            imposter.Remove<Animation>();
         imposter.Add<Foreground>();
+
 
         return imposter;
     }
@@ -172,4 +178,10 @@ internal class LevelFactory
                 Layer = (uint)CollisionLayers.Walls
             });
     }
+
+    public Entity CreateDarkness()
+        => ecsWorld.Create(
+            new Transform(game.Resolution / 2.0f),
+            new Appearance(new Sprite(game.Textures.CreateRectangle(game.Resolution, new Color(0, 0, 0, 150)))),
+            new Static());
 }

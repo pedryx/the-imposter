@@ -42,19 +42,21 @@ internal class BufferedList<T> : ICollection<T>, IEnumerable<T>, IList<T>, IRead
     /// </summary>
     public void Update()
     {
-        foreach (var item in itemsToRemove)
+        List<T> itemsToRemoveCopy = new(itemsToRemove);
+        itemsToRemove.Clear();
+        foreach (var item in itemsToRemoveCopy)
         {
             OnItemRemove?.Invoke(this, new BufferedListEventArgs<T>(item));
             list.Remove(item);
         }
-        itemsToRemove.Clear();
 
-        foreach (var item in itemsToAdd)
+        List<T> itemsToAddCopy = new(itemsToAdd);
+        itemsToAdd.Clear();
+        foreach (var item in itemsToAddCopy)
         {
             OnItemAdd?.Invoke(this, new BufferedListEventArgs<T>(item));
             list.Add(item);
         }
-        itemsToAdd.Clear();
     }
 
     public void Add(T item) => itemsToAdd.Add(item);

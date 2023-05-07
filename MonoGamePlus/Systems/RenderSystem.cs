@@ -11,10 +11,10 @@ namespace MonoGamePlus.Systems;
 /// Handles rendering of entities. Entities are divided into layer. To assign entity to some layer add
 /// corresponding tag component to it. If entity does not have any render layer tag component then it
 /// automatically belongs to normal layer. Layers are rendered in following order:
-/// 0. static layer,
 /// 1. background layer,
 /// 2. normal layer,
 /// 3. foreground layer,
+/// 4. static layer,
 /// Static layer does not use camera and clipping.
 /// </summary>
 public class RenderSystem : GameSystem
@@ -26,19 +26,19 @@ public class RenderSystem : GameSystem
 
     public RenderSystem()
     {
-        staticLayer = new QueryDescription().WithAll<Transform, Appearance, Static>();
         backgroundLayer = new QueryDescription().WithAll<Transform, Appearance, Background>();
         normalLayer = new QueryDescription().WithAll<Transform, Appearance>()
             .WithNone<Background, Foreground, Static>();
         foregroundLayer = new QueryDescription().WithAll<Transform, Appearance, Foreground>();
+        staticLayer = new QueryDescription().WithAll<Transform, Appearance, Static>();
     }
 
     protected override void Update(float elapsed)
     {
-        DrawLayer(staticLayer, false, false);
         DrawLayer(backgroundLayer);
         DrawLayer(normalLayer);
         DrawLayer(foregroundLayer);
+        DrawLayer(staticLayer, false, false);
 
         base.Update(elapsed);
     }

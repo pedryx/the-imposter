@@ -28,6 +28,8 @@ internal class PlayerControlSystem : GameSystem
             levelState.TryFindImposter();
         }
 
+        lastKeyboardState = current;
+
         base.Update(elapsed);
     }
 }

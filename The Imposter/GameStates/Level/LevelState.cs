@@ -10,6 +10,8 @@ using MonoGamePlus.Systems;
 using MonoGamePlus.UI;
 using MonoGamePlus.UI.Elements;
 
+using System.Collections.Generic;
+
 using TheImposter.Systems;
 
 namespace TheImposter.GameStates.Level;
@@ -18,14 +20,15 @@ internal class LevelState : GameState
     private const float maxImposterDistance = 200.0f;
     private const float playerBaseSpeed = 150.0f;
     private const int npcCount = 100;
-    private const float time = 2.0f * 60.0f;
+    private const float time = 3.0f * 60.0f;
 
     private readonly Color clearColor = new(70, 70, 70);
 
-    private Entity imposter;
+    private List<Entity> imposters;
     private EntityControlSystem controlSystem;
     // TODO: remove FPS counter
     private FPSCounterSystem fpsCounterSystem;
+    private Label imposterCountLabel;
 
     private Graph graph;
 
@@ -46,22 +49,33 @@ internal class LevelState : GameState
     public void TryFindImposter()
     {
         Vector2 playerPosition = Player.Get<Transform>().Position;
-        Vector2 imposterPosition = imposter.Get<Transform>().Position;
-        float distance = Vector2.Distance(playerPosition, imposterPosition);
 
-        if (distance <= maxImposterDistance)
+        for (int i = 0; i < imposters.Count; i++)
         {
-            Statistics.ImpostersFound++;
-            Statistics.CompletedStages++;
+            Vector2 imposterPosition = imposters[i].Get<Transform>().Position;
+            float distance = Vector2.Distance(playerPosition, imposterPosition);
 
-            Game.RemoveGameState(this);
-            Game.AddGameState(new StageWinState(Statistics, Upgrades, Stage));
+            if (distance <= maxImposterDistance)
+            {
+                Statistics.ImpostersFound++;
+                ECSWorld.Destroy(imposters[i]);
+                imposters.RemoveAt(i);
+                UpdateImposterCountLabel();
+
+                if (imposters.Count == 0)
+                {
+                    Statistics.CompletedStages++;
+
+                    Game.RemoveGameState(this);
+                    Game.AddGameState(new StageWinState(Statistics, Upgrades, Stage));
+                }
+                
+                return;
+            }
         }
-        else
-        {
-            Game.RemoveGameState(this);
-            Game.AddGameState(new GameOverState(Statistics, "THAT  WAS  NOT  THE  IMPOSTER!"));
-        }
+
+        Game.RemoveGameState(this);
+        Game.AddGameState(new GameOverState(Statistics, "THAT  WAS  NOT  THE  IMPOSTER!"));
     }
 
     protected override void Initialize()
@@ -72,6 +86,10 @@ internal class LevelState : GameState
 
         Game.ClearColor = clearColor;
         Camera.Target = Player;
+
+        PauseDialogState dialog = Dialogs.GetDialog(Stage);
+        if (dialog != null)
+            Game.AddGameState(dialog);
 
         base.Initialize();
     }
@@ -104,12 +122,13 @@ internal class LevelState : GameState
         LevelFactory factory = new(this);
         WorldGenerator generator = new(factory, this);
 
-        generator.Generate(npcCount);
+        generator.Generate(npcCount, Stage / 2 + 1, Stage == 3 || Stage == 4 || Stage >= 7, Stage < 5, Stage != 7 || Stage != 8, Stage != 9 || Stage != 10);
 
         graph = generator.Graph;
-        imposter = generator.Imposter;
-
+        imposters = new List<Entity>(generator.Imposters);
         Player = factory.CreatePlayer(generator.Spawn);
+
+        factory.CreateDarkness();
     }
 
     private void CreateUI()
@@ -126,5 +145,21 @@ internal class LevelState : GameState
             Game.AddGameState(new GameOverState(Statistics, "TIME  IS  UP!"));
         };
         UILayer.AddElement(timer);
+
+        if (Stage >= 2)
+        {
+            imposterCountLabel = new Label(new SpriteText(Game.Fonts["Curse of the Zombie;32"], "IMPOSTERS:  000"));
+            imposterCountLabel.Offset = new Vector2(imposterCountLabel.SpriteText.GetSize().X / 2.0f + 20.0f, 10.0f + Game.Resolution.Y - imposterCountLabel.SpriteText.GetSize().Y);
+            UpdateImposterCountLabel();
+            UILayer.AddElement(imposterCountLabel);
+        }
+    }
+
+    private void UpdateImposterCountLabel()
+    {
+        if (imposterCountLabel == null)
+            return;
+
+        imposterCountLabel.SpriteText.Text = "IMPOSTERS:  " + imposters.Count;
     }
 }

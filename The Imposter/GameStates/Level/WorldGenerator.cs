@@ -44,9 +44,7 @@ internal class WorldGenerator
     private readonly MGPGame game;
 
     public Graph Graph { get; private set; }
-
-    public Entity Imposter { get; private set; }
-
+    public Entity[] Imposters { get; private set; }
     public Vector2 Spawn { get; private set; }
 
     public WorldGenerator(LevelFactory factory, GameState gameState)
@@ -55,7 +53,7 @@ internal class WorldGenerator
         game = gameState.Game;
     }
 
-    public void Generate(int npcCount)
+    public void Generate(int npcCount, int imposterCount, bool impostersClothes, bool imposterSkeleton, bool imposterMovement, bool imposterAnimation)
     {
         Graph = new Graph();
         Spawn = new Vector2(houseWidth / 2.0f - roomBWidth / 2.0f, 0.0f);
@@ -63,8 +61,16 @@ internal class WorldGenerator
         CreateFloor();
         CreateMansion();
         SpawnNPCs(npcCount);
+        SpawnImposters(imposterCount, impostersClothes, imposterSkeleton, imposterMovement, imposterAnimation);
+    }
 
-        Imposter = factory.CreateImposter(Graph.GetRandomNode(game.Random).ToVector2());
+    private void SpawnImposters(int count, bool clothes, bool skeleton, bool movement, bool animation)
+    {
+        Imposters = new Entity[count];
+        for (int i = 0; i < count; i++)
+        {
+            Imposters[i] = factory.CreateImposter(Graph.GetRandomNode(game.Random).ToVector2(), clothes, skeleton, movement, animation);
+        }
     }
 
     private void SpawnNPCs(int count)

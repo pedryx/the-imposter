@@ -131,8 +131,6 @@ public class MGPGame : Game
             gameState.Initialize(this);
         }
 
-        activeStates.Update();
-
         base.LoadContent();
     }
 
