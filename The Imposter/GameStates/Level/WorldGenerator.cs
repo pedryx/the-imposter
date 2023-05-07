@@ -11,8 +11,8 @@ namespace TheImposter.GameStates.Level;
 internal class WorldGenerator
 {
     private const float doorWidth = 96.0f;
-    private const float houseWidth = 3072.0f;
-    private const float houseHeight = 2048.0f;
+    private const float houseWidth = 2048.0f;
+    private const float houseHeight = 1536.0f;
 
     private const float outsideWallsWidth = 32.0f;
     private const float insideWallsWidth = 16.0f;

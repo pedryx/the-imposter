@@ -19,9 +19,12 @@ internal class LevelState : GameState
 {
     private const float maxImposterDistance = 100.0f;
     private const float playerBaseSpeed = 150.0f;
-    private const int npcCount = 100;
-    private const float time = 3.0f * 60.0f;
-    private const int finalStage = 12;
+    private const int npcCount = 50;
+    private const float time = 2.0f * 60.0f;
+
+    public const int FinalStage = 12;
+    public const float StartVisibility = 0.7f;
+    public const float StartRadius = 200.0f;
 
     private readonly Color clearColor = new(70, 70, 70);
 
@@ -69,7 +72,7 @@ internal class LevelState : GameState
                     Statistics.CompletedStages++;
 
                     Game.RemoveGameState(this);
-                    if (Stage == finalStage)
+                    if (Stage == FinalStage)
                     {
                         Game.AddGameState(new GameOverState(Statistics, "YOU  HAVE  COMPLETED  ALL  STAGES!", true));
                     }
@@ -77,6 +80,11 @@ internal class LevelState : GameState
                     {
                         Game.AddGameState(new StageWinState(Statistics, Upgrades, Stage));
                     }
+                }
+                else
+                {
+                    Game.Sounds["twoTone2"].Play(0.3f, 0.0f, 0.0f);
+                    Camera.Shake(0.25f, 5.0f);
                 }
                 
                 return;
@@ -126,7 +134,7 @@ internal class LevelState : GameState
         AddUpdateSystem(new PlayerControlSystem(this));
         AddUpdateSystem(delayedStartSystem);
         AddUpdateSystem(new NoiseSystem(Player, maxImposterDistance / 2.0f));
-        AddUpdateSystem(new FogSystem(factory, Player));
+        AddUpdateSystem(new FogSystem(factory));
 
         AddUpdateSystem(fpsCounterSystem);
 
@@ -141,19 +149,20 @@ internal class LevelState : GameState
         WorldGenerator generator = new(factory, this);
 
         generator.Generate(
-            npcCount,
-            Stage / 2 + 1,
-            Stage == 3 || Stage == 4 || Stage >= 7,
-            Stage < 5,
-            Stage != 7 && Stage != 8,
-            Stage != 9 && Stage != 10,
-            Stage >= 11);
+            npcCount: npcCount,
+            imposterCount: Stage / 2 + 1,
+            impostersClothes: Stage == 3 || Stage == 4 || Stage >= 7,
+            imposterSkeleton: Stage < 5,
+            imposterMovement: Stage != 7 && Stage != 8,
+            imposterAnimation: Stage != 9 && Stage != 10,
+            imposterNoise: Stage >= 11);
 
         graph = generator.Graph;
         imposters = new List<Entity>(generator.Imposters);
         Player = factory.CreatePlayer(generator.Spawn);
 
-        factory.CreateDarkness();
+        factory.CreateVisibility(StartRadius + Upgrades.LightRadius);
+        factory.CreateDarkness(StartVisibility - Upgrades.LightIntensity);
     }
 
     private void CreateUI()

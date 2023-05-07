@@ -20,6 +20,11 @@ internal class GameOverState : GameState
 
     protected override void Initialize()
     {
+        if (victory)
+            Game.Sounds["win sound"].Play(0.4f, 0.0f, 0.0f);
+        else
+            Game.Sounds["lose sound"].Play(0.6f, 0.0f, 0.0f);
+
         UILayer.AddElement(new Image(new Sprite(Game.Textures["dark background"])
         {
             Origin = Vector2.Zero,

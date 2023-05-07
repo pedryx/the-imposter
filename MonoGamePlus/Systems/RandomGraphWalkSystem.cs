@@ -7,8 +7,8 @@ using MonoGamePlus.Components;
 namespace MonoGamePlus.Systems;
 public class RandomGraphWalkSystem : GameSystem<Transform, Movement, PathFollow>
 {
-    private const float waitMin = 1.0f;
-    private const float waitMax = 10.0f;
+    private const float waitMin = 0.5f;
+    private const float waitMax = 5.0f;
 
     private readonly Graph graph;
 

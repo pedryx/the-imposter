@@ -24,6 +24,7 @@ internal class StageWinState : GameState
 
     protected override void Initialize()
     {
+        Game.Sounds["win sound"].Play(0.4f, 0.0f, 0.0f);
         UILayer.AddElement(new Image(new Sprite(Game.Textures["dark background"])
         {
             Origin = Vector2.Zero,
@@ -44,6 +45,16 @@ internal class StageWinState : GameState
         panel.Add(CreateButton("MOVE  SPEED", () =>
         {
             upgrades.UpgradeMoveSpeed();
+            NextStage();
+        }));
+        panel.Add(CreateButton("LIGHT  INTENSITY", () =>
+        {
+            upgrades.UpgradeLightIntensity();
+            NextStage();
+        }));
+        panel.Add(CreateButton("LIGHT  RADIUS", () =>
+        {
+            upgrades.UpgradeLightRadius();
             NextStage();
         }));
 

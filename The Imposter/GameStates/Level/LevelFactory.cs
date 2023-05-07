@@ -194,10 +194,18 @@ internal class LevelFactory
             });
     }
 
-    public Entity CreateDarkness()
+    public Entity CreateDarkness(float value)
         => ecsWorld.Create(
             new Transform(game.Resolution / 2.0f),
-            new Appearance(new Sprite(game.Textures.CreateRectangle(game.Resolution, new Color(0, 0, 0, 150)))),
+            new Appearance(new Sprite(game.Textures.CreateRectangle(
+                game.Resolution,
+                new Color(0, 0, 0, value)))),
+            new Static());
+
+    public Entity CreateVisibility(float radius)
+        => ecsWorld.Create(
+            new Transform(game.Resolution / 2.0f),
+            new Appearance(new Sprite(game.Textures.CreateVisibilityCircle(game.Resolution, radius))),
             new Static());
 
     public Entity CreateFogCloud(Vector2 position)

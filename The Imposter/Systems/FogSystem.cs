@@ -1,18 +1,9 @@
 ﻿using Arch.Core;
-using Arch.Core.Extensions;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 using MonoGamePlus;
 using MonoGamePlus.Components;
-using MonoGamePlus.Resources;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using TheImposter.Components;
 using TheImposter.GameStates.Level;
@@ -24,12 +15,10 @@ internal class FogSystem : GameSystem<Transform, Movement, FogCloud>
     private const int border = 512;
 
     private readonly LevelFactory factory;
-    private readonly Entity target;
 
-    public FogSystem(LevelFactory factory, Entity target)
+    public FogSystem(LevelFactory factory)
     {
         this.factory = factory;
-        this.target = target;
     }
 
     protected override void Initialize()
@@ -50,7 +39,7 @@ internal class FogSystem : GameSystem<Transform, Movement, FogCloud>
         ref Movement movement,
         ref FogCloud cloud)
     {
-        movement.Speed = cloud.Speed;// + target.Get<Movement>().Speed;
+        movement.Speed = cloud.Speed;
 
         if (transform.Position.X < -border)
         {
