@@ -30,6 +30,7 @@ internal class LevelState : GameState
     // TODO: remove FPS counter
     private FPSCounterSystem fpsCounterSystem;
     private Label imposterCountLabel;
+    private LevelFactory factory;
 
     private Graph graph;
 
@@ -125,6 +126,7 @@ internal class LevelState : GameState
         AddUpdateSystem(new PlayerControlSystem(this));
         AddUpdateSystem(delayedStartSystem);
         AddUpdateSystem(new NoiseSystem(Player, maxImposterDistance / 2.0f));
+        AddUpdateSystem(new FogSystem(factory, Player));
 
         AddUpdateSystem(fpsCounterSystem);
 
@@ -135,7 +137,7 @@ internal class LevelState : GameState
 
     private void CreateEntities()
     {
-        LevelFactory factory = new(this);
+        factory = new(this);
         WorldGenerator generator = new(factory, this);
 
         generator.Generate(

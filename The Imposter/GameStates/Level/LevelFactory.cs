@@ -7,6 +7,7 @@ using MonoGamePlus;
 using MonoGamePlus.Components;
 using MonoGamePlus.Resources;
 
+using System;
 using System.Collections.Generic;
 
 using TheImposter.Components;
@@ -151,7 +152,13 @@ internal class LevelFactory
         return player;
     }
 
-    public Entity CreateImposter(Vector2 position, bool clothes, bool skeleton, bool movement, bool animation, bool noise)
+    public Entity CreateImposter(
+        Vector2 position,
+        bool clothes,
+        bool skeleton,
+        bool movement,
+        bool animation,
+        bool noise)
     {
         var imposter = CreateNPC(position, Color.White, clothes);
 
@@ -191,5 +198,21 @@ internal class LevelFactory
         => ecsWorld.Create(
             new Transform(game.Resolution / 2.0f),
             new Appearance(new Sprite(game.Textures.CreateRectangle(game.Resolution, new Color(0, 0, 0, 150)))),
+            new Static());
+
+    public Entity CreateFogCloud(Vector2 position)
+        => ecsWorld.Create(
+            new Transform(position),
+            new Appearance(new Sprite(game.Textures["cloud"])
+            {
+                Scale = new Vector2(game.Random.NextSingle(0.8f, 2.0f)),
+                Color = new Color(0.03f, 0.03f, 0.03f, 0.03f),
+                Rotation = game.Random.NextAngle(),
+            }),
+            new Movement(0.0f, MathF.PI),
+            new FogCloud()
+            {
+                Speed = game.Random.NextSingle(40.0f, 80.0f),
+            },
             new Static());
 }
