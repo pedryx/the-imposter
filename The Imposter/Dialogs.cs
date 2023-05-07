@@ -5,7 +5,7 @@ using TheImposter.GameStates;
 namespace TheImposter;
 internal static class Dialogs
 {
-    private static Dictionary<int, string> messages = new()
+    private static readonly Dictionary<int, string> messages = new()
     {
         { 1, "An evil skeleton lurks among your people - can you uncover its identity before time runs out?" },
         { 2, "The evil skeleton has called for reinforcements - now there are two! Beware, for their numbers will increase with every even round." },
@@ -17,8 +17,8 @@ internal static class Dialogs
 
     public static PauseDialogState GetDialog(int stage)
     {
-        if (messages.ContainsKey(stage))
-            return new PauseDialogState(messages[stage]);
+        if (messages.TryGetValue(stage, out string value))
+            return new PauseDialogState(value);
         
         return null;
     }

@@ -16,10 +16,10 @@ internal class LevelFactory
     private readonly World ecsWorld;
     private readonly Animations animations;
 
-    public LevelFactory(GameState gameState)
+    public LevelFactory(LevelState level)
     {
-        game = gameState.Game;
-        ecsWorld = gameState.ECSWorld;
+        game = level.Game;
+        ecsWorld = level.ECSWorld;
         animations = new Animations();
     }
 
@@ -127,7 +127,7 @@ internal class LevelFactory
 
     public Entity CreateNPC(Vector2 position, Color color, bool clothes = true)
     {
-        var npc = CreateCharacter(position, Color.White, clothes);
+        var npc = CreateCharacter(position, color, clothes);
 
         npc.Add(new PathFollow());
         npc.Get<Movement>().Speed = 80.0f;

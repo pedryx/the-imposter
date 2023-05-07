@@ -28,6 +28,8 @@ internal class PauseDialogState : GameState
 
     protected override void Initialize()
     {
+        LevelMusic.Puase();
+
         foreach (var state in Game.ActiveStates)
         {
             if (state != this)
@@ -41,6 +43,13 @@ internal class PauseDialogState : GameState
         CreateUI();
 
         base.Initialize();
+    }
+
+    protected override void Destroy()
+    {
+        LevelMusic.Resume();
+
+        base.Destroy();
     }
 
     private void Exit()
@@ -78,7 +87,7 @@ internal class PauseDialogState : GameState
 
     private void CreateUI()
     {
-        Image image = new Image(new Sprite(Game.Textures[dialogTextureName], 0.8f))
+        Image image = new(new Sprite(Game.Textures[dialogTextureName], 0.8f))
         {
             Offset = Game.Resolution / 2.0f + new Vector2(0.0f, 40.0f),
         };

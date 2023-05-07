@@ -75,6 +75,9 @@ public abstract class GameState
     /// <param name="system">System to add.</param>
     public void AddRenderSystem(GameSystem system) => renderSystems.Add(system);
 
+    public void RemoveUpdateSystem(GameSystem system) => updateSystems.Remove(system);
+    public void RemoveRenderSystem(GameSystem system) => renderSystems.Remove(system);
+
     /// <summary>
     /// Initialize game state.
     /// </summary>

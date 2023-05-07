@@ -37,6 +37,9 @@ public class RandomGraphWalkSystem : GameSystem<Transform, Movement, PathFollow>
         if (pathFollow.Path == null)
         {
             AssignPath(ref transform, ref movement, ref pathFollow);
+            pathFollow.WaitTime = Game.Random.NextSingle(waitMin, waitMax);
+            pathFollow.Speed = movement.Speed;
+            movement.Speed = 0.0f;
         }
 
         float distance = Vector2.Distance(transform.Position, pathFollow.Path[pathFollow.PathIndex]);

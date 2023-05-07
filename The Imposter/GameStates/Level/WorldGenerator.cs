@@ -350,7 +350,7 @@ internal class WorldGenerator
                 nodes);
         }
 
-        Rectangle rectangle = new Rectangle(offset.ToPoint(), size.ToPoint());
+        Rectangle rectangle = new(offset.ToPoint(), size.ToPoint());
         foreach (var doorPosition in doors)
         {
             if (!rectangle.Contains(doorPosition))

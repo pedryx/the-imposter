@@ -9,11 +9,13 @@ internal class GameOverState : GameState
 {
     private readonly Statistics statistics = new();
     private readonly string reason;
+    private readonly bool victory;
 
-    public GameOverState(Statistics statistics, string reason)
+    public GameOverState(Statistics statistics, string reason, bool victory = false)
     {
         this.statistics = statistics;
         this.reason = reason;
+        this.victory = victory;
     }
 
     protected override void Initialize()
@@ -24,11 +26,11 @@ internal class GameOverState : GameState
             Position = new Vector2(-100.0f)
         }));
 
-        UILayer.AddElement(new Label(new SpriteText(Game.Fonts["Storm Gust;128"], "Game Over", Color.White))
+        UILayer.AddElement(new Label(new SpriteText(Game.Fonts["Storm Gust;128"], victory ? "Victory" : "Game Over", victory ? Color.Gold : Color.DarkRed))
         {
             Offset = new Vector2(Game.Resolution.X / 2.0f, 90.0f),
         });
-        UILayer.AddElement(new Label(new SpriteText(Game.Fonts["Curse of the Zombie;32"], reason, Color.Gray))
+        UILayer.AddElement(new Label(new SpriteText(Game.Fonts["Curse of the Zombie;32"], reason, Color.White))
         {
             Offset = new Vector2(Game.Resolution.X / 2.0f, 240.0f),
         });

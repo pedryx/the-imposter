@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 using MonoGamePlus.Components;
+using MonoGamePlus.Events;
 using MonoGamePlus.Events.Events;
 
 namespace MonoGamePlus.Systems;
@@ -20,8 +21,9 @@ public class EntityControlSystem : GameSystem
     public Keys RightKey { get; set; } = Keys.D;
     public float Speed { get; set; } = 500.0f;
 
-    public event EntityEventHandler OnMoveStart;
-    public event EntityEventHandler OnMoveEnd;
+    public event EntityUpdateEventHandler OnMoveStart;
+    public event EntityUpdateEventHandler OnMoveEnd;
+    public event EntityUpdateEventHandler OnMove;
 
     public EntityControlSystem(Entity target)
     {
@@ -46,18 +48,23 @@ public class EntityControlSystem : GameSystem
         bool currentMovement = movementDirection != Vector2.Zero;
 
         if (currentMovement)
+        {
             movement.Direction = MathUtils.VectorToAngle(movementDirection);
+        }
 
         if (currentMovement & !lastMovement)
         {
             movement.Speed = Speed;
-            OnMoveStart?.Invoke(this, new EntityEventArgs(Target));
+            OnMoveStart?.Invoke(this, new EntityUpdateEventArgs(Target, elapsed));
         }
         else if (!currentMovement & lastMovement)
         {
             movement.Speed = 0.0f;
-            OnMoveEnd?.Invoke(this, new EntityEventArgs(Target));
+            OnMoveEnd?.Invoke(this, new EntityUpdateEventArgs(Target, elapsed));
         }
+
+        if (currentMovement)
+            OnMove?.Invoke(this, new EntityUpdateEventArgs(Target, elapsed));
 
         lastMovement = currentMovement;
 

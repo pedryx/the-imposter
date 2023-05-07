@@ -4,6 +4,11 @@
 	"castle tiles" by Lanea Zimmerman licensed CC-BY 4.0,CC-BY 3.0,CC-BY-SA 4.0,CC-BY-SA 3.0,GPL 3.0,OGA-BY 3.0: https://opengameart.org/content/lpc-interior-castle-tiles
 	"PauseMenu" by tgdcoder licensed CC0: https://opengameart.org/content/endless-midnight-zombie-swarm-assets
 
+Sounds:
+	"clock" by christoph licensed CC-BY 3.0,CC-BY-SA 3.0: https://opengameart.org/content/clock-ticking
+	"Is Anybody Home" by jdagenet licensed CC-BY-SA 3.0: https://opengameart.org/content/is-anybody-home
+	"ghost" by Ogrebane licensed CC0: https://opengameart.org/content/ghost
+
 Fonts:
 	"Storm Gust" by Hanzel Space licensed Free for personal use: https://www.dafont.com/storm-gust.font
 	"Curse of the Zombie" by imagex licensed Free for personal use: https://www.dafont.com/curse-of-the-zombie.font

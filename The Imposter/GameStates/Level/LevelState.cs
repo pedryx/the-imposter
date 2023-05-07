@@ -17,10 +17,11 @@ using TheImposter.Systems;
 namespace TheImposter.GameStates.Level;
 internal class LevelState : GameState
 {
-    private const float maxImposterDistance = 200.0f;
+    private const float maxImposterDistance = 100.0f;
     private const float playerBaseSpeed = 150.0f;
     private const int npcCount = 100;
     private const float time = 3.0f * 60.0f;
+    private const int finalStage = 10;
 
     private readonly Color clearColor = new(70, 70, 70);
 
@@ -67,7 +68,14 @@ internal class LevelState : GameState
                     Statistics.CompletedStages++;
 
                     Game.RemoveGameState(this);
-                    Game.AddGameState(new StageWinState(Statistics, Upgrades, Stage));
+                    if (Stage == finalStage)
+                    {
+                        Game.AddGameState(new GameOverState(Statistics, "YOU  HAVE  COMPLETED  ALL  STAGES!", true));
+                    }
+                    else
+                    {
+                        Game.AddGameState(new StageWinState(Statistics, Upgrades, Stage));
+                    }
                 }
                 
                 return;
@@ -80,6 +88,8 @@ internal class LevelState : GameState
 
     protected override void Initialize()
     {
+        Music.Play(Game);
+
         CreateEntities();
         CreateSystems();
         CreateUI();
@@ -100,7 +110,11 @@ internal class LevelState : GameState
         {
             Speed = playerBaseSpeed + Upgrades.MoveSpeed,
         };
+
         fpsCounterSystem = new FPSCounterSystem();
+
+        DelayedStartSystem delayedStartSystem = new(0.15f);
+        delayedStartSystem.OnDelayedStart += (sender, e) => LevelMusic.Play(Game);
 
         AddUpdateSystem(new TimePlayedTrackingSystem(this));
         AddUpdateSystem(new CameraZoomControlSystem());
@@ -109,6 +123,7 @@ internal class LevelState : GameState
         AddUpdateSystem(new MovementSystem());
         AddUpdateSystem(new CollisionSystem());
         AddUpdateSystem(new PlayerControlSystem(this));
+        AddUpdateSystem(delayedStartSystem);
 
         AddUpdateSystem(fpsCounterSystem);
 
@@ -122,7 +137,13 @@ internal class LevelState : GameState
         LevelFactory factory = new(this);
         WorldGenerator generator = new(factory, this);
 
-        generator.Generate(npcCount, Stage / 2 + 1, Stage == 3 || Stage == 4 || Stage >= 7, Stage < 5, Stage != 7 || Stage != 8, Stage != 9 || Stage != 10);
+        generator.Generate(
+            npcCount,
+            Stage / 2 + 1,
+            Stage == 3 || Stage == 4 || Stage >= 7,
+            Stage < 5,
+            Stage != 7 && Stage != 8,
+            Stage != 9 && Stage != 10);
 
         graph = generator.Graph;
         imposters = new List<Entity>(generator.Imposters);
@@ -149,10 +170,19 @@ internal class LevelState : GameState
         if (Stage >= 2)
         {
             imposterCountLabel = new Label(new SpriteText(Game.Fonts["Curse of the Zombie;32"], "IMPOSTERS:  000"));
-            imposterCountLabel.Offset = new Vector2(imposterCountLabel.SpriteText.GetSize().X / 2.0f + 20.0f, 10.0f + Game.Resolution.Y - imposterCountLabel.SpriteText.GetSize().Y);
+            imposterCountLabel.Offset = new Vector2(
+                imposterCountLabel.SpriteText.GetSize().X / 2.0f + 20.0f,
+                10.0f + Game.Resolution.Y - imposterCountLabel.SpriteText.GetSize().Y);
             UpdateImposterCountLabel();
             UILayer.AddElement(imposterCountLabel);
         }
+    }
+
+    protected override void Destroy()
+    {
+        LevelMusic.Stop();
+
+        base.Destroy();
     }
 
     private void UpdateImposterCountLabel()
