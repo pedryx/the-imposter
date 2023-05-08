@@ -14,6 +14,8 @@ internal class TitleState : GameState
 {
     protected override void Initialize()
     {
+        Music.Play(Game);
+
         UILayer.AddElement(new Image(new Sprite(Game.Textures["dark background"])
         {
             Origin = Vector2.Zero,

@@ -95,8 +95,6 @@ internal class LevelState : GameState
 
     protected override void Initialize()
     {
-        Music.Play(Game);
-
         CreateEntities();
         CreateSystems();
         CreateUI();
